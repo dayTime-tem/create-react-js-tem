@@ -9,7 +9,7 @@ import App from './App';
 import ErrorPage from './page/ErrorPage/ErrorPage'
 
 
-const Page =  () => (
+const AppPage =  () => (
     <Router>
         <Switch>
             <Route exact path="/" render={() => <Redirect to="/app/mainPage" push />} />
@@ -20,4 +20,4 @@ const Page =  () => (
         </Switch>
     </Router>
 );
-export default Page
+export default AppPage

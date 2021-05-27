@@ -26,6 +26,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -312,6 +313,7 @@ module.exports = function (webpackEnv) {
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
                     require.resolve('react-refresh/babel'),
+                  'lodash',
                 ].filter(Boolean),
                 cacheDirectory: true,
                 cacheCompression: false,
@@ -624,6 +626,7 @@ module.exports = function (webpackEnv) {
             },
           },
         }),
+      // new BundleAnalyzerPlugin({openAnalyzer: true})
     ].filter(Boolean),
     node: {
       module: 'empty',
