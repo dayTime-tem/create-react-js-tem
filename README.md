@@ -3,7 +3,7 @@
 
 >node >= 12.13.0
 > 
-> AntD + less + axios + react-router
+> AntD + less + axios + react-router + lodash
 
 + 按需加载
 + 删除部分基础项目用不上的文件
@@ -11,7 +11,6 @@
 + 项目基础文件架构
 
 待完成：
-+ lodash按需引入
 + 删除相关jest\test包
 + 基础样式搭建
 + 404页面搭建
