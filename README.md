@@ -1,6 +1,9 @@
 # 模板一
 基于create-react-app创建的react+antd项目框架
 
+>node >= 12.13.0
+> 
+
 + AntD
 + less
 + lodash
