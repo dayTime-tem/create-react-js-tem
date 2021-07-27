@@ -7,7 +7,9 @@ const menus = {
         {
             key: '/app/mainPage',
             title: '主页',
-            component: 'mainPage',
+            subs: [
+                { key: '/app/mainPage/replyList', title: '回复列表', component: 'ListPage', params: '?replyStatus=-1' }
+            ]
         },
     ],
 }

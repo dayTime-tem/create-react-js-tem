@@ -12,11 +12,13 @@ const CRouter = (props) => {
                     key={r.route || r.key}
                     exact
                     path={r.route || r.key}
-                    render={(props) => <Component {...props} />}
+                    render={(params) => <Component {...params} {...props} />}
                 />
             );
         };
-        return r.component ? route(r) : null
+        const subRoute = r =>
+            r.subs && r.subs.map(subR => subR.subs ? subRoute(subR) : route(subR))
+        return r.component ? route(r) : subRoute(r)
     }
     const createRoute = (key) => routesConfig[key].map(createMenu);
     return (
