@@ -26,8 +26,6 @@ const FormSearch = (props) => {
         searchMethod,
         setSearchFiled,
         beforeShowData,
-        autoRefresh, // 自动刷新
-        autoRefreshTime,
     } = props
     const [form] = Form.useForm();
     const [data, setData] = useState([]) // table列表数据
@@ -94,7 +92,7 @@ const FormSearch = (props) => {
             )}
             <div className={classNames('card')}>
                 <div className={classNames(style.handleBox)}>
-                    <TableHandleBtns handleBtns={handleBtns} onSearch={onSearch} {...{history, searchFiled, setSearchFiled, form, originalData, autoRefresh, autoRefreshTime, componentStatus}} />
+                    <TableHandleBtns handleBtns={handleBtns} onSearch={onSearch} {...{history, searchFiled, setSearchFiled, form, originalData, componentStatus}} />
                 </div>
                 <BasicTable {...{form, columns: handleColumns, data, tableParams, setLoading, paginationData, onChangePagination}} onSearch={onSearch} />
             </div>

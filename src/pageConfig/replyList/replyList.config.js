@@ -140,8 +140,6 @@ const formSearchProps = {
     },
     handleBtns,
     // searchMethod: getPoliticalList,
-    autoRefresh: true,
-
 }
 export {
     searchFiled, columns, formSearchProps
