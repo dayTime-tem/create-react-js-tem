@@ -4,17 +4,14 @@
  */
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import { Form, Button } from "antd"
-import { FormInput, FormDate, FormSelect, BasicTable, FormSelectInput } from "../widget"
+import { BasicTable } from "../widget"
 import style from "./index.module.less"
 import classNames from "classnames";
 import { TableHandleBtns } from "@/components"
 import { getUrlParams, errorTip } from "@/utils";
+import CreateFormItem from "./createFormItem";
 
 const { Item } = Form
-const defaultProps = {
-    labelCol: {span: 5}, wrapperCol: {span: 16}
-}
-const formComponents = {input: FormInput, date: FormDate, select: FormSelect, selectInput: FormSelectInput}
 
 const FormSearch = (props) => {
     const {
@@ -28,25 +25,24 @@ const FormSearch = (props) => {
         history,
         searchMethod,
         setSearchFiled,
-        beforeShowData
+        beforeShowData,
+        autoRefresh, // 自动刷新
+        autoRefreshTime,
     } = props
     const [form] = Form.useForm();
     const [data, setData] = useState([]) // table列表数据
     const [originalData, setOriginalData] = useState(null) // 原始数据
-    const createItem = useCallback((Component, params) => (<Component {...defaultProps} {...params} form={form} />), [form])
-    const createFormItems = useCallback(() => searchFiled.map(v => (
-        <div key={v.filed} className={classNames('third', 'i_b', v.className)}>
-            {createItem(formComponents[v.type], v)}
-        </div>
-    )), [searchFiled, createItem])
     const [pageParams, setPageParams] = useState({ pageSize:20, current: 1 })
     const [paginationData, setPaginationData] = useState({ pageSize:20, current: 1, total: 0 })
+    const [componentStatus, setComponentStatus] = useState(0) // 组件状态：1-loading中，0-复位
     const onSearch = useCallback((value) => {
         form && form.validateFields().then(res => {
             const searchParams = beforeSearch ? beforeSearch({...pageParams, ...res, ...getUrlParams(search), ...value}) : {...pageParams, ...res, ...getUrlParams(search), ...value}
             if (searchParams && searchMethod){
+                setComponentStatus(1)
                 setLoading && setLoading(true)
                 searchMethod(searchParams).then(res => {
+                    setComponentStatus(0)
                     setLoading && setLoading(false)
                     if (res.status !== '0') return errorTip(res.message)
                     setOriginalData(res?.data)
@@ -60,9 +56,9 @@ const FormSearch = (props) => {
     }, [form, beforeSearch, pageParams, search, searchMethod, setLoading, beforeShowData])
     const handleColumns = useMemo(() => columns.map(v => {
         const tem = {...v}
-        tem.render = v.render ? (text, record, index) => v.render(text, record, index, {setLoading, onSearch}) : text => <div>{text}</div>
+        tem.render = v.render ? (text, record, index) => v.render(text, record, index, {setLoading, onSearch, data, setData}) : text => <div>{text}</div>
         return tem
-    }), [columns, onSearch, setLoading])
+    }), [columns, onSearch, setLoading, data, setData])
 
     useEffect(() => {
         const { setFieldsValue } = form
@@ -83,7 +79,7 @@ const FormSearch = (props) => {
         <Form form={form}>
             {searchFiled && searchFiled.length > 0 && (
                 <div className={classNames('card', style.formContentBox)}>
-                    {createFormItems(searchFiled)}
+                    <CreateFormItem {...{form, searchFiled}} />
                     <div className={classNames(style.formHandleBtn)}>
                         <Item>
                             <Button type="primary" htmlType="submit" onClick={() => onSearch()}>
@@ -98,7 +94,7 @@ const FormSearch = (props) => {
             )}
             <div className={classNames('card')}>
                 <div className={classNames(style.handleBox)}>
-                    <TableHandleBtns handleBtns={handleBtns} onSearch={onSearch} {...{history, searchFiled, setSearchFiled, form, originalData}} />
+                    <TableHandleBtns handleBtns={handleBtns} onSearch={onSearch} {...{history, searchFiled, setSearchFiled, form, originalData, autoRefresh, autoRefreshTime, componentStatus}} />
                 </div>
                 <BasicTable {...{form, columns: handleColumns, data, tableParams, setLoading, paginationData, onChangePagination}} onSearch={onSearch} />
             </div>

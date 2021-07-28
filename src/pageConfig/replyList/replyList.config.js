@@ -139,7 +139,9 @@ const formSearchProps = {
         rowKey: 'id'
     },
     handleBtns,
-    // searchMethod: getPoliticalList
+    // searchMethod: getPoliticalList,
+    autoRefresh: true,
+
 }
 export {
     searchFiled, columns, formSearchProps
