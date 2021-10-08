@@ -1,6 +1,6 @@
 import { get, post } from './tools';
-import { sleep } from "@/utils"
-const REQUEST_URL = 'https://coverpolitics-api-idc-test.hljtv.com'
+import { sleep, setUrlParams } from "@/utils"
+const REQUEST_URL = 'http://122.9.44.39:8000'
 /**
  * login 登录
  * logout 登出
@@ -19,6 +19,24 @@ export const sendPhoneValidCode = params => get(REQUEST_URL + '/user/retrievePas
 export const checkNamePhoneAndCode = params => post(REQUEST_URL + '/user/retrievePassword/checkNamePhoneAndCode', params)
 export const updatePassword = params => post(REQUEST_URL + '/user/retrievePassword/updatePassword', params)
 
-export const getPoliticalList = params => get(REQUEST_URL + '/political/list', params)
-export const saveReply = params => post(REQUEST_URL + '/political/reply/saveReply', params)
-
+/**
+* 企业基础信息管理
+* */
+//列表查询
+export const baseInfoFindList = params => {
+    const { current, pageSize } = params
+    delete params['current']
+    delete params['pageSize']
+    return post(REQUEST_URL + `/enterprise/find/${setUrlParams({ current, pageSize })}`, params)
+}
+//创造企业
+export const createFirm = (id, params) => post(REQUEST_URL + `/enterprise/create/`, params)
+//查询企业详情
+export const getFirmInfo = ({id}) => get(REQUEST_URL + `/enterprise/${id}/`)
+//修改企业信息
+export const editFirmInfo = (id, params) => post(REQUEST_URL + `/enterprise/update/${id}/`, params)
+/**
+* 指标排行榜
+* */
+//列表查询
+export const trackList = params => get(REQUEST_URL + '/enterprise/track/', params)

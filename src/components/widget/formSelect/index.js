@@ -7,7 +7,7 @@ import { Form, Select } from "antd";
 const { Option } = Select
 
 const FormSelect = (props) => {
-    const { labelCol, wrapperCol, name, filed, required, initialValue, options = [], showSearch, disabled } = props
+    const { labelCol, wrapperCol, name, filed, required, initialValue, options = [], showSearch, disabled, mode } = props
     return (
         <Form.Item
             labelCol={labelCol}
@@ -22,9 +22,11 @@ const FormSelect = (props) => {
                 {...{showSearch, disabled}}
                 placeholder={`请选择${name}`}
                 allowClear
+                mode={mode}
+                maxTagCount={1}
             >
                 {options.map(v => (
-                    <Option key={String(v.id)} value={String(v.id)}>{v.name}</Option>
+                    <Option key={v.id} value={v.id}>{v.name}</Option>
                 ))}
             </Select>
         </Form.Item>

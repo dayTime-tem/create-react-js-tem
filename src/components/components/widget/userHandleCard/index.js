@@ -12,7 +12,7 @@ import { logout } from "@/service"
 
 const UserHandleCard = function (props){
     const { setLoad } = props
-    const registerInfo = JSON.parse(window.sessionStorage.getItem('registerInfo') || "{}")
+    const registerInfo = JSON.parse(window.localStorage.getItem('registerInfo') || "{}")
     const logoutBtn = () => {
         setLoad(true)
         logout().then(res => {

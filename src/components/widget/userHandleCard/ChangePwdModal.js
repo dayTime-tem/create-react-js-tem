@@ -21,9 +21,13 @@ const validatorTwice = (value, callBack, form) => {
 }
 
 const editFiled = [
-    {type: 'input', filed: 'password', name: '原密码', className: 'whole', required: true, inputType: 'password'},
-    {type: 'input', filed: 'newPassword', name: '新密码', className: 'whole', required: true, minLen: 8, inputType: 'password', validator},
-    {type: 'input', filed: 'twiceNewPassword', name: '确认密码', className: 'whole', required: true, inputType: 'password', validator: validatorTwice},
+    {
+        filed: [
+            {type: 'input', filed: 'password', name: '原密码', className: 'whole', required: true, inputType: 'password'},
+            {type: 'input', filed: 'newPassword', name: '新密码', className: 'whole', required: true, minLen: 8, inputType: 'password', validator},
+            {type: 'input', filed: 'twiceNewPassword', name: '确认密码', className: 'whole', required: true, inputType: 'password', validator: validatorTwice},
+        ]
+    }
 ]
 
 const ChangePwdModal = (props) => {

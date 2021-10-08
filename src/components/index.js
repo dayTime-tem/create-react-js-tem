@@ -5,9 +5,11 @@
 import ErrorBoundary from './highCom/errorBoundary'
 import HeaderCustom from './headerCustom'
 import CommitList from './commitList'
+import CommitEdit from "./commitEdit"
 import FormSearch from './formSearch'
 import FormEdit from "./formEdit";
 import TableHandleBtns from "./tableHandleBtns";
+import MenuItems from "./menuItems";
 
 export {
     ErrorBoundary,
@@ -16,4 +18,6 @@ export {
     FormSearch,
     FormEdit,
     TableHandleBtns,
+    MenuItems,
+    CommitEdit,
 }

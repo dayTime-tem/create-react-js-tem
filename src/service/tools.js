@@ -7,7 +7,7 @@ export const get = (url, params, config, msg = '接口异常') =>
             params,
             ...config
         })
-        .then(res => LogOnToCheck(res.data))
+        .then(res => LogOnToCheck(res?.data))
         .catch(err => errorTip(msg))
 
 export const post = (url, data, config, msg = '接口异常') =>
@@ -17,8 +17,9 @@ export const post = (url, data, config, msg = '接口异常') =>
         .catch(err => errorTip(msg))
 
 const LogOnToCheck = (data) => {
-    const { status } = data
-    if (status === window.state.AUTH_ERO) {
+    const { status, code } = data
+    data['status'] = code || status
+    if (data['status'] === window.state.AUTH_ERO) {
         clearLoginInfo()
     }
     return data

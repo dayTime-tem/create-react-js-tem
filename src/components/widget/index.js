@@ -12,8 +12,13 @@ import FormSelectInput from "./formSelectInput"; // 表单 - 选择条件，关�
 import BasicModal from './basicModal' // 基础弹窗
 import FormGetCode from './formGetCode' // 表单 - 发送电话、邮箱验证码
 import FormGraphValidate from './formGraphValidate' //表单 - 图形验证码
-import FormDetailsShow from './formDetailsShow' //表单 - 图片上传
+import FormDetailsShow from './formDetailsShow' //表单 - 详情展示
+import FormCheckBox from './formCheckBox' //表单 - 复选框
+import FormCascader from './formCascader' //表单 - 级联选择框
+import FormRadio from './formRadio' //表单 - 单选项
+import FormMultitermInputModal from './formMultitermInputModal' //表单 - 多项输入弹窗
 
 export {
-    Img, BasicTable, UserHandleCard, FormInput, FormDate, FormSelect, FormSelectInput, BasicModal, FormGetCode, FormGraphValidate, FormDetailsShow
+    Img, BasicTable, UserHandleCard, FormInput, FormDate, FormSelect, FormSelectInput, BasicModal, FormGetCode, FormGraphValidate, FormDetailsShow, FormCheckBox, FormCascader, FormRadio
+    ,FormMultitermInputModal
 }

@@ -8,7 +8,6 @@ import ReplyModal from './replyModal'
 import style from './index.module.less'
 import classNames from "classnames";
 import {getUrlParams, setUrlParams, setFiledProps} from "@/utils";
-import { getPoliticalList } from "@/service"
 import moment from 'moment';
 
 const replyStatus = [

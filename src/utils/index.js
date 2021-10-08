@@ -1,5 +1,24 @@
-import { notification, Modal } from "antd"
-import { ExclamationCircleOutlined } from "@ant-design/icons"
+import { notification, Modal, Tooltip } from "antd"
+import { ExclamationCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons"
+
+export const getType = (param) => Object.prototype.toString.call(param).split(' ')[1].split(']')[0].toLowerCase()
+
+export const clearObj = (obj) => {
+    let tem = {}
+    Object.entries(obj).forEach(([key, value]) => {
+        if (getType(value) === 'undefined') return;
+        if (getType(value) === 'null') return;
+        if (getType(value) === 'array' && value.length === 0) return;
+        if (getType(value) === 'object'){
+            let child = clearObj(value)
+            if (child) tem[key] = child
+        }else{
+            tem[key] = value
+        }
+    })
+    return Object.keys(tem).length === 0 ? undefined : tem
+}
+
 /**
  * search: String
  * name: String
@@ -11,7 +30,7 @@ export const getUrlParams = (search, name) => {
     let res = {}
     params.forEach(v => {
         const [key, val] = v.split('=')
-        res[key] = val
+        res[decodeURIComponent(key)] = JSON.parse(decodeURIComponent(val))
     })
     return name ? res[name] : res
 }
@@ -25,7 +44,8 @@ export const setUrlParams = (query) => {
     let queryArr = []
     for (let key in query){
         if (query.hasOwnProperty(key)){
-            queryArr.push(`${key}=${encodeURIComponent(query[key])}`)
+            if (query[key] === undefined) continue;
+            queryArr.push(`${key}=${encodeURIComponent(JSON.stringify(query[key]))}`)
         }
     }
     return url + queryArr.join('&')
@@ -71,6 +91,15 @@ export const validationEmail = (value) => /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-
 export const validationPhone = (value) => /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(value)
 
 /**
+ * value: String
+ */
+export const validationNumber = (value) => !/[^0-9|.]/.test(value)
+export const formValidationNumber = (value, callBack) => {
+    if (!validationNumber(value)) return callBack('只能输入数字')
+    return callBack()
+}
+
+/**
  * value: any
  * return Promise
  */
@@ -103,7 +132,7 @@ export const errorTip = (msg, title = '错误') => {
     return notification['error']({ message: title, description: msg });
 }
 export const successTip = (msg, title = '成功') => {
-    return notification['success']({ message: title, description: msg });
+    return notification['success']({ message: title, description: msg || "操作成功" });
 }
 
 /**
@@ -131,7 +160,7 @@ export const confirm = ({title, content, onOk, onCancel, okText = '确认', canc
 
 export const md5 = (str) => require('md5')(str).toLocaleUpperCase()
 export const clearLoginInfo = () => {
-    window.sessionStorage.setItem('registerInfo', '')
+    window.localStorage.setItem('registerInfo', '')
     return window.location.hash = '#/login'
 }
 export const initialValueCallBack = ({initialVal, type = 'text', props}) => {
@@ -147,5 +176,6 @@ export const initialValueCallBack = ({initialVal, type = 'text', props}) => {
             return val
     }
 }
+export const tipQuestion = (tip) => <Tooltip title={tip}><QuestionCircleOutlined style={{color: '#9f9f9f'}} /></Tooltip>
 
 

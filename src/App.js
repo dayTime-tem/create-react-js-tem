@@ -1,14 +1,14 @@
 import './style/index.less'
 import './style/antdGlobal.less'
 import Routes from './routes';
-import { ErrorBoundary, HeaderCustom } from "./components";
+import { ErrorBoundary, HeaderCustom, MenuItems } from "./components";
 import { Layout, ConfigProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import 'moment/locale/zh-cn';
 import {useState} from "react";
 
 
-const { Header, Footer, Content } = Layout;
+const { Header, Footer, Content, Sider } = Layout;
 
 const RoutesCon = ErrorBoundary(Routes)
 
@@ -20,10 +20,13 @@ function App(props) {
             <Spin spinning={load}>
                 <div className="App">
                     <Header className="wrapHeader whole"><HeaderCustom {...{setLoad}} {...props} /></Header>
-                    <Content className="wrapContent whole">
-                        <RoutesCon {...{setLoad}} />
-                        <Footer className="wrapFooter whole" />
-                    </Content>
+                    <Layout>
+                        <Sider theme="light" collapsible className="slider"><MenuItems {...{setLoad}} {...props} /></Sider>
+                        <Content className="wrapContent whole">
+                            <RoutesCon {...{setLoad}} />
+                            <Footer className="wrapFooter whole" />
+                        </Content>
+                    </Layout>
                 </div>
             </Spin>
         </ConfigProvider>

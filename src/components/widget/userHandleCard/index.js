@@ -12,7 +12,7 @@ import { logout } from "@/service"
 
 const UserHandleCard = function (props){
     const { setLoad } = props
-    const registerInfo = JSON.parse(window.sessionStorage.getItem('registerInfo') || "{}")
+    const registerInfo = JSON.parse(window.localStorage.getItem('registerInfo') || "{}")
     const logoutBtn = () => {
         setLoad(true)
         logout().then(res => {
@@ -30,7 +30,7 @@ const UserHandleCard = function (props){
         )} content={(
             <div>
                 <ul className={style.handle}>
-                    <li className={classNames(style.txt)}>欢迎使用 某某后台模板</li>
+                    <li className={classNames(style.txt)}>欢迎使用 四川省网信企业数据库</li>
                     <li>
                         <ChangePwdModal {...props} />
 

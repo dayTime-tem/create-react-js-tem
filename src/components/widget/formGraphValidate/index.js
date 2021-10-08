@@ -49,7 +49,7 @@ const FormGraphValidate = (props) => {
                     validateTrigger='onBlur'
                     noStyle
                 >
-                    <Input style={{flex: 1, marginRight: 12}} placeholder={`请输入${name}`} />
+                    <Input style={{flex: 1, marginRight: 12}} autocomplete="off" placeholder={`请输入${name}`} />
                 </Form.Item>
                 <Spin spinning={loading}>
                     <div style={{width: 100, border: '1px solid #d9d9d9', height: 32, cursor: 'pointer'}} onClick={onSend}>

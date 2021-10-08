@@ -3,12 +3,12 @@
  * @Date: 2021/7/28
  */
 import React, { useCallback } from "react"
-import { FormInput, FormDate, FormSelect, FormSelectInput } from "../widget"
+import { FormInput, FormDate, FormSelect, FormSelectInput, FormCheckBox, FormRadio } from "../widget"
 import classNames from "classnames";
 const defaultProps = {
     labelCol: {span: 5}, wrapperCol: {span: 16}
 }
-const formComponents = {input: FormInput, date: FormDate, select: FormSelect, selectInput: FormSelectInput}
+const formComponents = {input: FormInput, date: FormDate, select: FormSelect, selectInput: FormSelectInput, check: FormCheckBox, radio: FormRadio}
 
 const CreateFormItem = ({ form, searchFiled }) =>{
     const createItem = useCallback((Component, params) => (<Component {...defaultProps} {...params} form={form} />), [form])

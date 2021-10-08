@@ -5,15 +5,19 @@
 import React, {useEffect, useMemo, useState} from "react";
 import { Table } from 'antd';
 const BasicTable = (props) => {
-    const { columns, data, tableParams = {}, paginationData = {}, onChangePagination, isHasBtn = true, } = props
+    const { columns, data, tableParams = {}, paginationData = {}, onChangePagination, isHasBtn = true, selectedRow, setSelectedRow} = props
     const { rowSelection, pagination, rowKey } = tableParams
     const rowSelectionParams = useMemo(() => ({
         fixed: true,
-    }), [])
+        onChange: (selectedRowKeys, selectedRows) => {
+            setSelectedRow([...selectedRows])
+        },
+        selectedRowKeys: selectedRow.map(v => v[rowKey])
+    }), [selectedRow, rowKey, setSelectedRow])
     const [pagePagination, setPagePagination] = useState({ pageSize: 10, current: 1, total: 0 })
     useEffect(() => {
         paginationData && setPagePagination({...paginationData})
-    }, [paginationData])
+    }, [paginationData, rowKey])
     const paginationParams = useMemo(() => ({
         position: 'bottomRight',
         pageSizeOptions: [10, 20, 50, 100],

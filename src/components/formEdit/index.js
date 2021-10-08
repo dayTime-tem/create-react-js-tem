@@ -4,46 +4,30 @@
  */
 import React, {useCallback, useEffect, useImperativeHandle, useState} from "react";
 import {Form} from "antd";
-import {FormDate, FormInput, FormSelect, FormGetCode, FormGraphValidate, FormDetailsShow} from "../widget";
-import classNames from "classnames";
-import {getUrlParams, errorTip} from "@/utils"
-const formComponents = {
-    input: FormInput,
-    date: FormDate,
-    select: FormSelect,
-    getCode: FormGetCode,
-    graphValidate: FormGraphValidate,
-    details: FormDetailsShow,
-}
-const defaultProps = {
-    labelCol: {span: 5}, wrapperCol: {span: 17}
-}
+import {errorTip} from "@/utils"
+import CreateFormItem from "./createFormItem";
+
 const FormEdit = (props, ref) =>{
-    const { editFiled = [], editForm = {}, record, searchMethod, beforeSearch, beforeShowData, setLoading, editFiledValue, widgetProps } = props
+    const { editFiled = [], editForm = {}, editProps = {}, record, searchMethod, beforeSearch, beforeShowData, setLoading, editFiledValue, widgetProps, type, id } = props
     const [editValue, setEditValue] = useState({})
+    const [showFiled, changeShowFiled] = useState(editFiled)
     const [form] = Form.useForm();
     const onSearch = useCallback((value) => {
-        const searchParams = beforeSearch ? beforeSearch({...getUrlParams(), ...value, record}) : {...getUrlParams(), ...value}
+        const searchParams = beforeSearch ? beforeSearch({...value, record, id}) : {...value, record, id}
         if (searchParams && searchMethod){
             setLoading && setLoading(true)
             searchMethod(searchParams).then(res => {
                 setLoading && setLoading(false)
-                if (res.status !== '0') return errorTip(res.message)
-                const data = beforeShowData ? beforeShowData(res.data) : res.data
+                if (res.status !== 200) return errorTip(res.message)
+                const data = beforeShowData ? beforeShowData(res.data, {type}) : res.data
                 setEditValue(data)
             })
         }
-    }, [beforeSearch, beforeShowData, record, searchMethod, setLoading])
-    const createItem = useCallback((Component, params) => {
-        const formProps = {...defaultProps, ...params}
-        return (<Component {...formProps} {...{record}} {...{form, setLoading, onSearch, widgetProps}} />)
-    }, [form, onSearch, record, setLoading, widgetProps])
-    const createFormItems = useCallback(() => editFiled.map(v => (
-        <div key={v.filed} className={classNames('third', 'i_b', v.className)}>
-            {createItem(formComponents[v.details ? 'details' : v.type], v)}
-        </div>
-    )), [editFiled, createItem])
-
+    }, [beforeSearch, beforeShowData, record, searchMethod, setLoading, id, type])
+    
+    useEffect(() => {
+        changeShowFiled(editFiled)
+    }, [editFiled])
     useEffect(() => {
         Object.keys(editValue || {}).length && form.setFieldsValue({...editValue})
     }, [editValue, form])
@@ -51,25 +35,37 @@ const FormEdit = (props, ref) =>{
         Object.keys(editFiledValue || {}).length && form.setFieldsValue({...editFiledValue})
     }, [editFiledValue, form])
     useEffect(() => {
-        onSearch()
-    }, [onSearch])
+        if (type !== 'add'){
+            searchMethod && onSearch()
+        }
+    }, [onSearch, searchMethod, type])
 
     const getForm = () => form
     const submit = () => {
         return new Promise(resolve => {
-            const { validateFields } = form.current
-            const { beforeEdited } = editForm
-            validateFields().then(res => {
+            const { validateFields } = form
+            const { beforeEdited } = editProps
+            validateFields().then((res) => {
                 resolve(beforeEdited ? beforeEdited(res) : res)
-            }).catch((err) => resolve(err))
+            }).catch((err) => console.log(err))
         })
     }
+    const changeEditFiled = useCallback((newEditFiled) => {
+        if (newEditFiled) changeShowFiled(newEditFiled)
+        return { showFiled, changeShowFiled  }
+    }, [showFiled])
     useImperativeHandle(ref, () => {
-        return { getForm, submit, onSearch }
+        return { getForm, submit, onSearch, changeEditFiled }
     })
     return (
         <Form form={form} {...editForm}>
-            {createFormItems(editFiled)}
+            {showFiled.map((v, i) => (
+                <div key={v.title + i}>
+                    <div style={{fontSize: 16, fontWeight: 600}}>{v.title}</div>
+                    <CreateFormItem {...{ form, editFiled: v.filed, record, setLoading, widgetProps, changeEditFiled }} />
+                </div>
+            ))}
+
         </Form>
     )
 }
