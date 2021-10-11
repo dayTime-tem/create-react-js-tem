@@ -11,8 +11,9 @@ import { changePassword } from "@/service"
 import {md5, errorTip, successTip, clearLoginInfo} from "@/utils"
 const validator = (value, callBack) => {
     let regNumber = /[0-9]/g
-    let regLetter = /[A-z]/g
-    if (!regNumber.test(value) || !regLetter.test(value)) return callBack('必须包含数字和字母')
+    let regCapitalLetter = /[A-Z]/g
+    let regLowercaseLetter = /[a-z]/g
+    if (!regNumber.test(value) || !regCapitalLetter.test(value) || !regLowercaseLetter.test(value)) return callBack('必须包含数字和大小写字母')
     return callBack()
 }
 const validatorTwice = (value, callBack, form) => {
@@ -24,8 +25,8 @@ const editFiled = [
     {
         filed: [
             {type: 'input', filed: 'password', name: '原密码', className: 'whole', required: true, inputType: 'password'},
-            {type: 'input', filed: 'newPassword', name: '新密码', className: 'whole', required: true, minLen: 8, inputType: 'password', validator},
-            {type: 'input', filed: 'twiceNewPassword', name: '确认密码', className: 'whole', required: true, inputType: 'password', validator: validatorTwice},
+            {type: 'input', filed: 'newPassword', name: '新密码', className: 'whole', required: true, minLen: 6, maxLen: 20, inputType: 'password', validator},
+            {type: 'input', filed: 'twiceNewPassword', name: '确认新密码', className: 'whole', required: true, inputType: 'password', validator: validatorTwice},
         ]
     }
 ]
@@ -43,6 +44,7 @@ const ChangePwdModal = (props) => {
             const { password, newPassword } = data
             changePassword({password: md5(password), newPassword: md5(newPassword)}).then(res => {
                 closeLoad()
+                getForm().resetFields()
                 if (res.status !== window.state.SUCCESS) return errorTip(res.message)
                 successTip(res.message)
                 clearLoginInfo()

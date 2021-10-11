@@ -9,9 +9,9 @@ const REQUEST_URL = 'http://122.9.44.39:8000'
 // export const login = params => get(REQUEST_URL + '/login', params)
 // export const logout = () => get(REQUEST_URL + '/logout')
 // export const changePassword = params => post(REQUEST_URL + '/changePassword', params)
-export const login = () => sleep(1000).then(res => ({status: '200'}))
-export const logout = () => sleep(1000).then(res => ({status: '200'}))
-export const changePassword = () => sleep(1000).then(res => ({status: '200'}))
+export const login = () => sleep(1000).then(res => ({status: 200}))
+export const logout = () => sleep(1000).then(res => ({status: 200}))
+export const changePassword = () => sleep(1000).then(res => ({status: 300}))
 
 
 export const getCaptcha = () => get(REQUEST_URL + '/sys/captcha')
@@ -27,7 +27,7 @@ export const baseInfoFindList = params => {
     const { current, pageSize } = params
     delete params['current']
     delete params['pageSize']
-    return post(REQUEST_URL + `/enterprise/find/${setUrlParams({ current, pageSize })}`, params)
+    return post(REQUEST_URL + `/enterprise/find/${setUrlParams({ pageSize, current })}`, params)
 }
 //创造企业
 export const createFirm = (id, params) => post(REQUEST_URL + `/enterprise/create/`, params)

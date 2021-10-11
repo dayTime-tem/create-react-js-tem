@@ -14,6 +14,7 @@ const FormInput = (props) => {
         { validator: validator ? (rule, value) => validator(value, validatorCallBack, form) : () => validatorCallBack() }
     ]
     if (minLen) rules.push({ min: minLen, message: `${name}最少${minLen}位！`, type: 'string' })
+    if (maxLen && inputType === 'password') rules.push({ max: maxLen, message: `${name}最多${maxLen}位！`, type: 'string' })
     return (
         <Form.Item
             labelCol={labelCol}

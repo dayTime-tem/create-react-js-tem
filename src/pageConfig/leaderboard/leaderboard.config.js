@@ -5,7 +5,6 @@
 import {Button} from "antd";
 import React from "react";
 import {trackList} from "../../service";
-import {getUrlParams} from "../../utils";
 
 const rankType = [
     {id: 0, name: '综合实力排行'},
@@ -17,23 +16,20 @@ const rankType = [
     {id: 6, name: '大数据'},
     {id: 7, name: '云计算'},
     {id: 8, name: '互联网+'},
+    {id: 9, name: '其他'},
 ]
 
 
 export const searchFiled = [
+    {type: 'input', filed: "name", name: '关键词', className: 'whole', wrapperCol: {span: 6}},
     {type: 'radio', filed: "track", name: '排行榜类型', className: 'whole', options: rankType, wrapperCol: {span: 18}, initialValue: 0, radioType: 'button', required: true},
 ]
 
 export const columns = [
     {
-        title: '序号',
-        dataIndex: '序号',
-        key: '序号',
-        render: (text, record, index, props) => {
-            let i = index + 1
-            const { current, pageSize } = getUrlParams(props.history.location.search)
-            return (<div>{(current - 1) * pageSize + i}</div>)
-        },
+        title: '排名',
+        dataIndex: 'index',
+        key: 'index',
         width: 180
     },
     {

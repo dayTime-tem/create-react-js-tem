@@ -24,13 +24,13 @@ const UserHandleCard = function (props){
     }
     return (
         <Popover title={(
-            <div className={style.userName}>
-                登录用户：{registerInfo?.userName}
+            <div className={style.title}>
+                欢迎使用 四川省网信企业数据库
             </div>
         )} content={(
             <div>
                 <ul className={style.handle}>
-                    <li className={classNames(style.txt)}>欢迎使用 四川省网信企业数据库</li>
+                    <li className={classNames(style.txt)}>用户名：{registerInfo?.userName}</li>
                     <li>
                         <ChangePwdModal {...props} />
 
@@ -38,9 +38,10 @@ const UserHandleCard = function (props){
 
                     </li>
                 </ul>
-                
+
             </div>
         )} placement="bottomRight" trigger="click">
+            <span className={style.userName}>{registerInfo?.userName}</span>
             <Avatar size={36} src="https://wapcdn.thecover.cn/nest/images/avatar.png" />
         </Popover>
     )

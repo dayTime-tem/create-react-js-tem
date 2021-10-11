@@ -21,7 +21,7 @@ const formComponents = {
     details: FormDetailsShow,
 }
 const defaultProps = {
-    labelCol: {span: 5}, wrapperCol: {span: 17}
+    labelCol: {span: 6}, wrapperCol: {span: 17}
 }
 
 const CreateFormItem = ({ form, editFiled, record, setLoading, widgetProps, changeEditFiled }) =>{

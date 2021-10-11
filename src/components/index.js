@@ -10,6 +10,7 @@ import FormSearch from './formSearch'
 import FormEdit from "./formEdit";
 import TableHandleBtns from "./tableHandleBtns";
 import MenuItems from "./menuItems";
+import AuthPermission from "./authPermission";
 
 export {
     ErrorBoundary,
@@ -20,4 +21,5 @@ export {
     TableHandleBtns,
     MenuItems,
     CommitEdit,
+    AuthPermission,
 }

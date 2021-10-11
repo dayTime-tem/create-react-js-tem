@@ -1,3 +1,4 @@
+import React from "react";
 import './style/index.less'
 import './style/antdGlobal.less'
 import Routes from './routes';
@@ -33,4 +34,4 @@ function App(props) {
     );
 }
 
-export default App;
+export default React.memo(App);

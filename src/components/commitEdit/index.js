@@ -10,6 +10,8 @@ import classNames from "classnames";
 import style from "./index.module.less"
 import {errorTip} from "@/utils";
 import {successTip} from "../../utils";
+import {AuthPermission} from "@/components";
+
 const CommitEdit = (props) => {
     const { config, type, history, id } = props
     const [loading, setLoading] = useState(false)
@@ -46,12 +48,15 @@ const CommitEdit = (props) => {
         <div>
             <Spin spinning={loading}>
                 <div className={classNames('card', style.minHeight)}>
+                    {type === 'add' && <div className={style.title}>添加{editProps.name}</div>}
+                    {type === 'edit' && <div className={style.title}>修改{editProps.name}</div>}
+                    {type === 'info' && <div className={style.title}>{editProps.name}详情</div>}
                     <FormEdit ref={form} {...{config, type, editFiled, editProps, id}} {...editProps} {...props} setLoading={setLoad} />
                 </div>
                 <div className={classNames(style.btnsBox)}>
                     <Button onClick={() => history.go(-1)} danger ghost>关闭</Button>
                     {   type !== 'info' && (
-                        <Button type="primary" size='large' style={{marginLeft: 12}} onClick={save}>保存</Button>
+                        <AuthPermission permission={editProps.savePermission}><Button type="primary" size='large' style={{marginLeft: 12}} onClick={save}>保存</Button></AuthPermission>
                     )}
                 </div>
             </Spin>

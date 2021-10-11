@@ -7,6 +7,7 @@ import { Button } from "antd";
 import style from './index.module.less'
 import {errorTip, successTip} from "@/utils";
 import {DownloadOutlined} from "@ant-design/icons"
+import {AuthPermission} from "@/components";
 
 const TableHandleBtns = (props) => {
     const { data, handleBtns, addShow, removeShow, history, selectedRow, setLoading, onSearch, exportShow, exportMethod, config } = props
@@ -43,17 +44,17 @@ const TableHandleBtns = (props) => {
         return '新建'
     }, [config])
     const defaultBtn = [
-        {name: addName(), key: 'add', permission: '', show: addShow, onclick: skipAdd},
-        {name: '批量删除', key: 'batchRemove', permission: '', show: removeShow, onclick: batchRemove},
+        {name: addName(), key: 'add', show: addShow, onclick: skipAdd},
+        {name: '批量删除', key: 'batchRemove', show: removeShow, onclick: batchRemove},
     ]
     const functionHandle = [
-        {name: '导出', key: 'export', permission: '', show: exportShow, onclick: exportData, icon: <DownloadOutlined />},
+        {name: '导出', key: 'export', show: exportShow, onclick: exportData, icon: <DownloadOutlined />},
     ]
 
     return (
         <div className={style.container}>
             <div className="flex-left">
-                <div className={style.defaultBtnBox}>{defaultBtn.map(v => v.show ? <Button onClick={v.onclick} className={style.independent} key={v.key}>{v.name}</Button> : null)}</div>
+                <div className={style.defaultBtnBox}>{defaultBtn.map(v => v.show ? <AuthPermission permission={typeof v.show === 'boolean' ? undefined : v.show} key={v.key}><Button onClick={v.onclick} className={style.independent}>{v.name}</Button></AuthPermission> : null)}</div>
                 <div>{handleBtns.map(v => (v.custom ? v.custom({...props}) : <Button key={JSON.stringify(v)}>{v.showText}</Button>))}</div>
             </div>
             <div className="flex-right">

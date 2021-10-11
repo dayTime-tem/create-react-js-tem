@@ -10,7 +10,7 @@ import classNames from "classnames";
 import { TableHandleBtns } from "@/components"
 import { errorTip, setUrlParams } from "@/utils";
 import CreateFormItem from "./createFormItem";
-import {clearObj} from "../../utils";
+import {clearObj, sleep} from "../../utils";
 
 const { Item } = Form
 
@@ -27,7 +27,7 @@ const FormSearch = (props, ref) => {
         searchMethod,
         setSearchFiled,
         beforeShowData,
-        addShow, removeShow, exportShow, exportMethod
+        addShow, removeShow, exportShow, exportMethod, filedFold
     } = props
     const [form] = Form.useForm();
     const [data, setData] = useState([]) // table列表数据
@@ -39,16 +39,20 @@ const FormSearch = (props, ref) => {
             resolve(res)
         }).catch(() => {})
     }).catch(() => {}), [form])
-    const searchApi = useCallback((params, url) => {
+    const searchApi = useCallback((params, url, type) => {
+        // history[(type === 'init' ? 'replace' : 'push')](history.location.pathname + setUrlParams(url))
         history.push(history.location.pathname + setUrlParams(url))
-        if (!searchMethod) return;
+        if (!searchMethod) {
+            setPaginationData({ pageSize:20, current: 1, total: 0 })
+            return setData([]);
+        }
         setLoading && setLoading(true)
         searchMethod(params).then(res => {
             setLoading && setLoading(false)
-            if (res.status / 1 !== window.state.SUCCESS / 1) return errorTip(res.message || res.msg)
+            if (res.status / 1 !== window.state.SUCCESS) return errorTip(res.message || res.msg)
             setOriginalData(res?.data)
             const {pageList, pageSize, current, total} = beforeShowData ? beforeShowData(res.data) : res.data
-            setPaginationData({pageSize, current, total})
+            setPaginationData({pageSize: pageSize / 1, current: current / 1, total: total / 1})
             setData(pageList)
         })
     }, [searchMethod, setLoading, beforeShowData, history])
@@ -73,25 +77,25 @@ const FormSearch = (props, ref) => {
     }, [form, urlParams])
 
     const onReset = () => {
-        form.resetFields()
+        form && form.resetFields()
     }
     const onChangePagination = (page, pageSize) => {
         onSearch({pageSize:pageSize / 1, current: page / 1})
     }
     useEffect(() => {
         // componentDidMount方式
-        // searchMethod && onSearch(urlParams)
-        beforeSearch && onSearch(urlParams)
-        if (beforeSearch){
-            getFormValue().then(res => {
-                let searchParams = {...res, ...urlParams}
-                let cleanParams = beforeSearch ? beforeSearch(searchParams) : searchParams
-                if (!cleanParams) return ;
-                searchApi(clearObj(cleanParams), clearObj(searchParams))
+        if (searchMethod){
+            sleep(0).then(() =>{
+                getFormValue().then(res => {
+                    let searchParams = {...res, ...urlParams}
+                    let cleanParams = beforeSearch ? beforeSearch(searchParams) : searchParams
+                    if (!cleanParams) return ;
+                    searchApi(clearObj(cleanParams), clearObj(searchParams), 'init')
+                })
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [beforeSearch, getFormValue])
+    }, [searchMethod, getFormValue])
     useImperativeHandle(ref, () => {
         return { onSearch }
     })
@@ -99,7 +103,7 @@ const FormSearch = (props, ref) => {
         <Form form={form}>
             {searchFiled && searchFiled.length > 0 && (
                 <div className={classNames('card', style.formContentBox)}>
-                    <CreateFormItem {...{form, searchFiled}} />
+                    <CreateFormItem {...{form, searchFiled, filedFold}} />
                     <div className={classNames(style.formHandleBtn)}>
                         <Item>
                             <Button type="primary" htmlType="submit" onClick={() => onSearch({current: 1})}>

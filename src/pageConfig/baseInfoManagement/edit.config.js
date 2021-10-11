@@ -2,9 +2,23 @@
  * @Author: dayTimeAffect
  * @Date: 2021/9/26
  */
-import {formValidationNumber, tipQuestion} from "@/utils";
+import {formValidationNumber} from "@/utils";
 import {createFirm, editFirmInfo, getFirmInfo} from "../../service";
 import moment from "moment";
+import {
+    social_security,
+    quit_rate,
+    professional_expansion_rate,
+    performance_growth_rate,
+    debt_ratio,
+    research_proportion,
+    survival_time,
+    finance_round,
+    market,
+    track,
+    ratepaying_credit,
+    fiscal_revenue
+} from "./options"
 
 const companyType = [
     {id: 1, name: '有限责任公司'},
@@ -21,7 +35,6 @@ const companyType = [
     {id: 12, name: '联营企业'},
     {id: 13, name: '私营企业'},
 ]
-
 const industry = [
     {id: 1, name: '电信、广播电视和卫星传输服务'},
     {id: 2, name: '计算机、通信和其他电子设备制造业'},
@@ -41,38 +54,9 @@ const companyStatus = [
     {id: 6, name: '迁入'},
     {id: 7, name: '迁出'},
 ]
-const financing = [
-    {id: 1, name: '未融资'},
-    {id: 2, name: '天使/种子轮'},
-    {id: 3, name: 'PreA至A+轮'},
-    {id: 4, name: 'PreB至B+轮'},
-    {id: 5, name: 'C轮及以上'},
-    {id: 6, name: 'IPO上市'},
-    {id: 7, name: '并购/合并'},
-    {id: 8, name: '战略融资/投资'},
-    {id: 9, name: '股权融资/转让'},
-    {id: 10, name: '定向增发'},
-    {id: 0, name: '其他'},
-]
-const market = [
-    {id: 1, name: '未上市'},
-    {id: 2, name: 'A股'},
-    {id: 3, name: '中概股'},
-    {id: 4, name: '港股'},
-    {id: 5, name: '科创板'},
-    {id: 6, name: '新三板'},
-    {id: 7, name: '新四板'},
-]
-const track = [
-    {id: 1, name: '互联网基础软硬件'},
-    {id: 2, name: '互联网前沿技术与平台'},
-    {id: 3, name: '网络安全'},
-    {id: 4, name: '网络信息服务'},
-    {id: 5, name: '人工智能'},
-    {id: 6, name: '大数据'},
-    {id: 7, name: '云计算'},
-    {id: 8, name: '互联网+'},
-]
+
+
+
 
 let sichuan = {
     "四川省": {
@@ -117,7 +101,6 @@ export const editFiled = [
         title: '企业基本信息',
         filed: [
             {type: 'input', filed: 'name', name: '企业名称', className: 'whole', required: true},
-            {type: 'input', filed: 'register_capital', name: '注册资本(万人名币)', required: true, validator: formValidationNumber},
             {type: 'date', filed: 'register_time', name: '注册时间', required: true},
             {type: 'cascader', filed: 'region', name: '省/市/区', required: true, options: staticMap, className: 'whole', wrapperCol: {span: 6}},
             {type: 'select', filed: 'enterprise_type', name: '公司类型', required: true, options: companyType},
@@ -125,6 +108,11 @@ export const editFiled = [
             {type: 'input', filed: 'juridical_person', name: '法人', required: true},
             {type: 'select', filed: 'enterprise_status', name: '企业状态', required: true, options: companyStatus},
             {type: 'check', filed: 'track', name: '所属赛道', required: true, options: track, className: 'whole'},
+            {type: 'select', filed: 'finance_round', name: '融资轮次', required: true, options: finance_round},
+            {type: 'multitermInputModal', filed: 'capital_firm', name: '投资机构品牌', className: 'whole'},
+            {type: 'select', filed: 'ratepaying_credit', name: '纳税信用评级', required: true, options: ratepaying_credit},
+            {type: 'select', filed: 'fiscal_revenue', name: '最新财年营收', required: true, options: fiscal_revenue},
+
         ]
     },
     {
@@ -136,15 +124,10 @@ export const editFiled = [
     {
         title: '企业技术水平',
         filed: [
-            {type: 'input', filed: 'patent', name: '专利数量', required: true, tip: tipQuestion('区分发明专利和实用新性专利(个)'), validator: formValidationNumber},
-            {type: 'input', filed: 'copyright', name: '著作权数量', required: true, validator: formValidationNumber},
-        ]
-    },
-    {
-        title: '企业融资情况',
-        filed: [
-            {type: 'select', filed: 'finance_round', name: '轮次', required: true, options: financing},
-            {type: 'select', filed: 'market', name: '是否上市', required: true, options: market},
+            {type: 'input', filed: 'invent', name: '发明专利', required: true, validator: formValidationNumber},
+            {type: 'input', filed: 'utility_model', name: '实用新型专利', required: true, validator: formValidationNumber},
+            {type: 'input', filed: 'design', name: '外观专利', required: true, validator: formValidationNumber},
+            {type: 'input', filed: 'copyright', name: '著作权', required: true, validator: formValidationNumber},
         ]
     },
     {
@@ -152,14 +135,28 @@ export const editFiled = [
         filed: [
             {type: 'multitermInputModal', filed: 'judicial_risk', name: '司法风险', className: 'whole'},
             {type: 'multitermInputModal', filed: 'regulatory_risk', name: '监管风险', className: 'whole'},
-            {type: 'multitermInputModal', filed: 'business_risk', name: '经营风险', inputType: 'textArea', className: 'whole'},
+            {type: 'multitermInputModal', filed: 'business_risk', name: '经营风险', className: 'whole'},
         ]
     },
     {
         title: '企业品牌建设',
         filed: [
-            {type: 'multitermInputModal', filed: 'award', name: '获奖表彰', className: 'whole'},
-            {type: 'multitermInputModal', filed: 'negative_opinion', name: '负面舆论', className: 'whole'},
+            {type: 'multitermInputModal', filed: 'award', name: '荣誉奖项', className: 'whole'},
+            {type: 'multitermInputModal', filed: 'negative_opinion', name: '负面舆情', className: 'whole'},
+        ]
+    },
+    {
+        title: '其他关键信息',
+        filed: [
+            {type: 'select', filed: 'social_security', name: '社保缴纳基数', options: social_security},
+            {type: 'select', filed: 'quit_rate', name: '离职率', options: quit_rate},
+            {type: 'select', filed: 'professional_expansion_rate', name: '研发人员扩张率', options: professional_expansion_rate},
+            {type: 'select', filed: 'performance_growth_rate', name: '(营收)业绩增长率', options: performance_growth_rate},
+            {type: 'select', filed: 'debt_ratio', name: '负债率', options: debt_ratio},
+            {type: 'select', filed: 'research_proportion', name: '研发费用占比', options: research_proportion},
+            {type: 'select', filed: 'survival_time', name: '存续时间', options: survival_time},
+            {type: 'input', filed: 'register_capital', name: '实缴注册资本(万人名币)', validator: formValidationNumber},
+            {type: 'select', filed: 'market', name: '上市阶段', options: market},
         ]
     },
 ]
@@ -188,4 +185,6 @@ export const editProps = {
     searchMethod: getFirmInfo,
     addMethod: createFirm,
     saveMethod: editFirmInfo,
+    savePermission: 'add',
+    name: '企业信息'
 }

@@ -8,6 +8,10 @@ import * as editConfig from "./edit.config"
 import {baseInfoFindList} from "../../service";
 import { confirm, errorTip, successTip } from "@/utils"
 import moment from "moment";
+import {AuthPermission} from "@/components";
+import { finance_round, market, track, ratepaying_credit, fiscal_revenue,
+    social_security, quit_rate, professional_expansion_rate, performance_growth_rate, debt_ratio, research_proportion, survival_time} from "./options"
+
 const registeredCapital = [
     {id: 1, name: '100万以内'},
     {id: 2, name: '100万-200万'},
@@ -31,46 +35,24 @@ const contributors = [
     {id: 6, name: '5000-9999人'},
     {id: 7, name: '10000人以上'},
 ]
-const financeInfo = [
-    {id: 1, name: '未融资'},
-    {id: 2, name: '天使/种子轮'},
-    {id: 3, name: 'PreA至A+轮'},
-    {id: 4, name: 'PreB至B+轮'},
-    {id: 5, name: 'C轮及以上'},
-    {id: 6, name: 'IPO上市'},
-    {id: 7, name: '并购/合并'},
-    {id: 8, name: '战略融资/投资'},
-    {id: 9, name: '股权融资/转让'},
-    {id: 10, name: '定向增发'},
-    {id: 0, name: '其他'},
-]
-const listedState = [
-    {id: 1, name: '未上市'},
-    {id: 2, name: 'A股'},
-    {id: 3, name: '中概股'},
-    {id: 4, name: '港股'},
-    {id: 5, name: '科创板'},
-    {id: 6, name: '新三板'},
-    {id: 7, name: '新四板'},
-]
-const track = [
-    {id: 1, name: '互联网基础软硬件'},
-    {id: 2, name: '互联网前沿技术与平台'},
-    {id: 3, name: '网络安全'},
-    {id: 4, name: '网络信息服务'},
-    {id: 5, name: '人工智能'},
-    {id: 6, name: '大数据'},
-    {id: 7, name: '云计算'},
-    {id: 8, name: '互联网+'},
-]
+
 export const searchFiled = [
     {type: 'input', filed: "name", name: '关键词', className: 'whole', wrapperCol: {span: 6}},
     {type: 'check', filed: "register_capital", name: '注册资本', className: 'whole', options: registeredCapital, customRange: {type: 'text', unit: '万'}, wrapperCol: {span: 18}},
     {type: 'check', filed: "register_time", name: '成立时间', className: 'whole', options: createTime, customRange: {type: 'date'}, wrapperCol: {span: 18}},
     {type: 'check', filed: "insure", name: '参保人数', className: 'whole', options: contributors, customRange: {type: 'text', unit: '人'}, wrapperCol: {span: 19}},
-    {type: 'check', filed: "finance_round", name: '融资信息', className: 'whole', options: financeInfo, wrapperCol: {span: 18}},
-    {type: 'check', filed: "market", name: '上市状态', className: 'whole', options: listedState, wrapperCol: {span: 18}},
+    {type: 'check', filed: "finance_round", name: '融资信息', className: 'whole', options: finance_round, wrapperCol: {span: 18}},
+    {type: 'check', filed: "market", name: '上市状态', className: 'whole', options: market, wrapperCol: {span: 18}},
     {type: 'check', filed: "track", name: '赛道', className: 'whole', options: track, wrapperCol: {span: 18}},
+    {type: 'check', filed: "ratepaying_credit", name: '纳税信用评级', className: 'whole', options: ratepaying_credit, wrapperCol: {span: 18}},
+    {type: 'check', filed: "fiscal_revenue", name: '最新财年营收', className: 'whole', options: fiscal_revenue, wrapperCol: {span: 18}},
+    {type: 'check', filed: "social_security", name: '社保缴纳基数', className: 'whole', options: social_security, wrapperCol: {span: 18}},
+    {type: 'check', filed: "quit_rate", name: '离职率', className: 'whole', options: quit_rate, wrapperCol: {span: 18}},
+    {type: 'check', filed: "professional_expansion_rate", name: '研发人员扩张率', className: 'whole', options: professional_expansion_rate, wrapperCol: {span: 18}},
+    {type: 'check', filed: "performance_growth_rate", name: '(营收)业绩增长率', className: 'whole', options: performance_growth_rate, wrapperCol: {span: 18}},
+    {type: 'check', filed: "debt_ratio", name: '负债率', className: 'whole', options: debt_ratio, wrapperCol: {span: 18}},
+    {type: 'check', filed: "research_proportion", name: '研发费用占比', className: 'whole', options: research_proportion, wrapperCol: {span: 18}},
+    {type: 'check', filed: "survival_time", name: '存续时间', className: 'whole', options: survival_time, wrapperCol: {span: 18}},
 ]
 
 export const columns = [
@@ -88,12 +70,19 @@ export const columns = [
             <div>
                 <div style={{margin: "4px 0"}}>注册资本：{record.register_capital}万</div>
                 <div style={{margin: "4px 0"}}>成立时间：{moment(record.register_time).format("YYYY-MM-DD")}</div>
-                <div style={{margin: "4px 0"}}>员工人数：{record.insure}</div>
-                <div style={{margin: "4px 0"}}>融资信息：{financeInfo.find(v => v.id / 1 === record.finance_round / 1)?.name}</div>
-                <div style={{margin: "4px 0"}}>上市状态：{listedState.find(v => v.id / 1 === record.market / 1)?.name}</div>
+                <div style={{margin: "4px 0"}}>参保人数：{record.insure}人</div>
+                <div style={{margin: "4px 0"}}>融资信息：{finance_round.find(v => v.id / 1 === record.finance_round / 1)?.name}</div>
+                <div style={{margin: "4px 0"}}>上市状态：{market.find(v => v.id / 1 === record.market / 1)?.name}</div>
                 <div style={{margin: "4px 0"}}>赛道：{record.track?.map(v => (track.find(item => item.id / 1 === v / 1)).name).join('、')}</div>
             </div>
         ),
+    },
+    {
+        title: '得分',
+        dataIndex: 'total_score',
+        key: 'total_score',
+        render: (text, record, index, props) => (<div>{text}</div>),
+        width: 240
     },
     {
         title: '操作',
@@ -102,8 +91,8 @@ export const columns = [
         render: (text, record, index, props) => (
             <div className="handleBtnBoX">
                 <Button onClick={() => props.history.push(props.history.location.pathname + '/info/' + text)}>更多详情</Button>
-                <Button onClick={() => props.history.push(props.history.location.pathname + '/edit/' + text)}>修改</Button>
-                <Button onClick={() => removeData(record, props)}>删除</Button>
+                <AuthPermission permission="add"><Button onClick={() => props.history.push(props.history.location.pathname + '/edit/' + text)}>修改</Button></AuthPermission>
+                <AuthPermission permission="remove"><Button onClick={() => removeData(record, props)}>删除</Button></AuthPermission>
             </div>
         ),
         width: 300
@@ -156,11 +145,12 @@ export const formSearchProps = {
         rowKey: 'id',
         rowSelection: true, // 列表是否可勾选
     },
-    addShow: true, //添加按钮
-    removeShow: true, // 批量删除按钮
+    addShow: 'add', //添加按钮
+    removeShow: 'remove', // 批量删除按钮
     exportShow: true, // 导出按钮
     // exportMethod: //导出api接口
     searchMethod: baseInfoFindList,
+    filedFold: 3, // 展示个数
 }
 export {
     editConfig

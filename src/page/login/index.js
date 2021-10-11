@@ -44,17 +44,18 @@ const Login = (props) => {
                 window.localStorage.setItem('registerInfo', JSON.stringify({
                     userName: userName
                 }))
+                window.localStorage.setItem('permissionGroup', JSON.stringify(['add', 'remove', "allPermission"]))
                 history.replace(goRoute ? goRoute : '/app/baseInfoManagement')
             })
         }).catch(res => {})
     }
-
     return (
         <div className={style.loginBg}>
             <div className={style.mainLogin}>
                 <Spin spinning={loading}>
                     <div className={style.mainLoginContent}>
                         {/*<img src="https://wapcdn.hljtv.com/cdn/nest/images/login-logo.1ffGvlq.png" alt="logo"/>*/}
+                        <div style={{fontSize: 24, fontWeight: 600, textAlign:'center', marginBottom: 24}}>四川省网信企业数据库</div>
                         <div>
                             <FormEdit ref={form} editFiled={editFiled} />
                             <div className={classNames('whole', style.loginBtn)} onClick={login}>登录</div>

@@ -4,16 +4,21 @@ import AllComponents from '../page';
 import routesConfig from './config';
 
 const CRouter = (props) => {
+    const permissionGroup = JSON.parse(window.localStorage.getItem('permissionGroup') || "[]" )
     const createMenu = (r) => {
         const route = (r) => {
             const Component = r.component && AllComponents[r.component];
             return (
-                <Route
-                    key={r.route || r.key}
-                    exact
-                    path={r.route || r.key}
-                    render={(params) => <Component {...params} {...props} />}
-                />
+                !r.permission || (permissionGroup.includes('allPermission') || permissionGroup.includes(r.permission)) ? (
+                    <Route
+                        key={r.route || r.key}
+                        exact
+                        path={r.route || r.key}
+                        render={(params) => <Component {...params} {...props} />}
+                    />
+                ) : (
+                    <Route render={() => <Redirect to="/404" />} />
+                )
             );
         };
         const subRoute = r =>
@@ -30,4 +35,4 @@ const CRouter = (props) => {
         </Router>
     );
 }
-export default CRouter
+export default React.memo(CRouter)
