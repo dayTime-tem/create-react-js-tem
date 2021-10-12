@@ -33,7 +33,7 @@ const FormInput = (props) => {
                     <Form.Item name={filed} {...{initialValue, rules, validateTrigger}} noStyle><Input.TextArea maxLength={maxLen || 500} placeholder={`请输入${name}`} showCount autoSize={{minRows: 3, maxRows: 6}} /></Form.Item>
                     }
                     {inputType === 'text' &&
-                    <Form.Item name={filed} {...{initialValue: initialValueCallBack({initialVal: initialValue, props: { form, record }}), rules, validateTrigger}} noStyle><Input maxLength={maxLen || 128} placeholder={`请输入${name}`} /></Form.Item>
+                    <Form.Item name={filed} {...{initialValue: initialValueCallBack({initialVal: initialValue, props: { form, record }}), rules, validateTrigger}} noStyle><Input autoComplete="off" maxLength={maxLen || 128} placeholder={`请输入${name}`} /></Form.Item>
                     }
                 </>
             }

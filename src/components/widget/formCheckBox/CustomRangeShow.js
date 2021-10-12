@@ -7,13 +7,13 @@ import {Button, DatePicker, Input, Popover, Tag} from "antd";
 import moment from "moment";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 const { RangePicker } = DatePicker
-const help = <span><ExclamationCircleOutlined style={{color: '#faad14', marginRight: 6}} />最高值不能小于最低值</span>
 
 const CustomRangeShow = (props) => {
     const {value, onChange, customRange} = props
     const [min, setMin] = useState('')
     const [max, setMax] = useState('')
     const [helpVisible, setHelpVisible] = useState(false)
+    const [help, setHelp] = useState("")
     const [date, setDate] = useState([])
     const changeValue = (e, type) => {
         if (!/[^0-9]/g.test(e.target.value) && e.target.value.length < 8){
@@ -34,7 +34,7 @@ const CustomRangeShow = (props) => {
                 <span style={{marginLeft: 8, display: 'inline-block'}}>
                         <span>自定义</span>
                         <span style={{padding: '0 8px'}}>
-                            <Popover visible={helpVisible} title={null} content={(help)} placement='bottomRight'>
+                            <Popover visible={helpVisible} title={null} content={(<span><ExclamationCircleOutlined style={{color: '#faad14', marginRight: 6}} />{help}</span>)} placement='bottomRight'>
                                 <Input style={{ width: 100, textAlign: 'center' }} placeholder="最低" value={min} onChange={e => changeValue(e, 'min')} />
                                 <Input style={{width: 30, borderLeft: 0, borderRight: 0, pointerEvents: 'none',}} placeholder="-" disabled />
                                 <Input style={{width: 100, textAlign: 'center'}} placeholder="最高" value={max} onChange={e => changeValue(e, 'max')} />
@@ -44,12 +44,20 @@ const CustomRangeShow = (props) => {
                     <Button style={{marginLeft: 8}} type="primary" ghost onClick={() => {
                         if (min.length === 0 || max.length === 0) return;
                         if (parseInt(min) > parseInt(max)){
+                            setHelp('最高值不能小于最低值')
                             setHelpVisible(true)
-                            setMax('')
                             setTimeout(() => setHelpVisible(false), 1500)
                         }else{
-                            let tem = value ? [...value, `${min}${customRange.unit}-${max}${customRange.unit}`] : [`${min}${customRange.unit}-${max}${customRange.unit}`]
-                            onChange([...tem])}
+                            if (!(value || []).includes(`${min}${customRange.unit}-${max}${customRange.unit}`)){
+                                onChange([...(value || []), `${min}${customRange.unit}-${max}${customRange.unit}`])
+                            }else{
+                                setHelp('不能添加重复的数据')
+                                setHelpVisible(true)
+                                setTimeout(() => setHelpVisible(false), 1500)
+                            }
+                            setMin('')
+                        }
+                        setMax('')
                     }}>确定</Button>
                     </span>
             }
@@ -57,13 +65,21 @@ const CustomRangeShow = (props) => {
                 <span style={{marginLeft: 8, display: 'inline-block'}}>
                         <span>自定义</span>
                         <span style={{padding: '0 8px'}}>
-                            <RangePicker style={{width: 300}} value={date.length === 0 ? null : [moment(date[0]), moment(date[1])]} onChange={changeDate} />
+                            <Popover visible={helpVisible} title={null} content={(<span><ExclamationCircleOutlined style={{color: '#faad14', marginRight: 6}} />{help}</span>)} placement='bottomRight'>
+                                <RangePicker style={{width: 300}} value={date.length === 0 ? null : [moment(date[0]), moment(date[1])]} onChange={changeDate} />
+                            </Popover>
                         </span>
                     {customRange?.unit && <span>{customRange.unit}</span>}
                     <Button style={{marginLeft: 8}} type="primary" ghost onClick={() => {
                         if (date.length === 0) return;
-                        let tem = value ? [...value, `${date[0]} ~ ${date[1]}`] : [`${date[0]} ~ ${date[1]}`]
-                        onChange([...tem])
+                        if (!(value || []).includes(`${date[0]} ~ ${date[1]}`)){
+                            onChange([...(value || []), `${date[0]} ~ ${date[1]}`])
+                        }else{
+                            setHelp('不能添加重复的数据')
+                            setHelpVisible(true)
+                            setTimeout(() => setHelpVisible(false), 1500)
+                        }
+                        setDate([])
                     }}>确定</Button>
                     </span>
             }

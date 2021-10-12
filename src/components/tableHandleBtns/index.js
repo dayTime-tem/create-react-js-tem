@@ -15,7 +15,6 @@ const TableHandleBtns = (props) => {
         history.push(history.location.pathname + '/add')
     }
     const batchRemove = useCallback(() => {
-        console.log(selectedRow);
         if (selectedRow.length === 0){
             errorTip('未选择数据')
         }else{
@@ -31,9 +30,8 @@ const TableHandleBtns = (props) => {
     const exportData = useCallback(() => {
         if (exportMethod){
             setLoading(true)
-            exportMethod(data).then(res => {
-                if (res.status !== window.state.SUCCESS) return errorTip(res.msg)
-                return successTip(res.msg || '操作成功')
+            exportMethod({data}).then(res => {
+                setLoading(false)
             })
         }
     }, [exportMethod, setLoading, data])

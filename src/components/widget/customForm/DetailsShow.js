@@ -28,8 +28,8 @@ const DetailsShow = (props) => {
             <div className={style.detailsShowBox}>
                 { type === 'input' && <span>{value}</span>}
                 { type === 'date' && <span>{value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : ""}</span>}
-                { type === 'select' && <span>{optionsMap[value]}</span>}
-                { type === 'multitermInputModal' && <div>{value?.map((v, i) => (<div key={i} style={{margin: '0 10px 12px'}}><span style={{marginRight: 6}}>{i + 1}:</span><span>{value}</span></div>))}</div>}
+                { type === 'select' && <span>{Object.prototype.toString.call(value).includes("Array") ? value.map(v => optionsMap[v]).join('、') : optionsMap[value]}</span>}
+                { type === 'multitermInputModal' && <div>{value?.map((v, i) => (<div key={i} style={{margin: '0 10px 12px'}}><span style={{marginRight: 6}}>{i + 1}:</span><span>{v}</span></div>))}</div>}
                 { type === 'check' && <span>{value?.options?.map(v => optionsMap[v])?.join("、")}</span>}
                 { type === 'cascader' && <span>{value?.join("/")}</span>}
                 { type === 'resource' && resourceType === 'img' && (

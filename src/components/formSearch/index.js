@@ -106,7 +106,7 @@ const FormSearch = (props, ref) => {
                     <CreateFormItem {...{form, searchFiled, filedFold}} />
                     <div className={classNames(style.formHandleBtn)}>
                         <Item>
-                            <Button type="primary" htmlType="submit" onClick={() => onSearch({current: 1})}>
+                            <Button type="primary" onClick={() => onSearch({current: 1})}>
                                 搜索
                             </Button>
                             <Button htmlType="button" onClick={onReset}>

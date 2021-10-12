@@ -143,10 +143,10 @@ export const successTip = (msg, title = '成功') => {
  * onOk?: Promise | Function
  * onCancel?: Promise | Function
  * */
-export const confirm = ({title, content, onOk, onCancel, okText = '确认', cancelText = '取消'}) => {
+export const confirm = ({title, content, onOk, onCancel, okText = '确认', cancelText = '取消', icon = true}) => {
     const { confirm } = Modal
     return confirm({
-        icon: <ExclamationCircleOutlined />,
+        icon: icon ? <ExclamationCircleOutlined /> : null,
         title, content, okText, cancelText,
         onOk(close) {
            return onOk ? onOk(close) : close()
