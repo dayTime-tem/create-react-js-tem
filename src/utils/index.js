@@ -95,7 +95,7 @@ export const validationPhone = (value) => /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(v
  */
 export const validationNumber = (value) => !/[^0-9|.]/.test(value)
 export const formValidationNumber = (value, callBack) => {
-    if (!validationNumber(value)) return callBack('只能输入数字')
+    if (value && !validationNumber(value)) return callBack('只能输入数字')
     return callBack()
 }
 
@@ -149,7 +149,7 @@ export const confirm = ({title, content, onOk, onCancel, okText = '确认', canc
         icon: icon ? <ExclamationCircleOutlined /> : null,
         title, content, okText, cancelText,
         onOk(close) {
-           return onOk ? onOk(close) : close()
+            return onOk ? onOk(close) : close()
         },
         onCancel(close) {
             return onCancel ? onCancel(close) : close()
@@ -177,5 +177,12 @@ export const initialValueCallBack = ({initialVal, type = 'text', props}) => {
     }
 }
 export const tipQuestion = (tip) => <Tooltip title={tip}><QuestionCircleOutlined style={{color: '#9f9f9f'}} /></Tooltip>
+
+export const isArray = data => Object.prototype.toString.call(data).includes('Array')
+export const isNull = data => Object.prototype.toString.call(data).includes('Null')
+export const isUndefined = data => Object.prototype.toString.call(data).includes('Undefined')
+export const isString = data => Object.prototype.toString.call(data).includes('String')
+
+export const isNoneVal = value => isNull(value) || isUndefined(value) || (isString(value) && value.length === 0)
 
 

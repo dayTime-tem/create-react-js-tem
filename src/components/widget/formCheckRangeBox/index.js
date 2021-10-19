@@ -6,7 +6,7 @@ import React from "react";
 import { Form, Checkbox } from "antd";
 import CustomRangeShow from "./CustomRangeShow"
 
-const FormCheckBox = (props) => {
+const FormCheckRangeBox = (props) => {
     const { labelCol, wrapperCol, name, filed, required, initialValue, options = [], customRange } = props
     return (
         <Form.Item
@@ -27,4 +27,4 @@ const FormCheckBox = (props) => {
         </Form.Item>
     )
 }
-export default React.memo(FormCheckBox)
+export default React.memo(FormCheckRangeBox)

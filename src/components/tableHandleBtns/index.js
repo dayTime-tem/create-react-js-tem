@@ -5,28 +5,37 @@
 import React, {useCallback} from "react";
 import { Button } from "antd";
 import style from './index.module.less'
-import {errorTip, successTip} from "@/utils";
+import {errorTip, successTip, confirm} from "@/utils";
 import {DownloadOutlined} from "@ant-design/icons"
 import {AuthPermission} from "@/components";
 
 const TableHandleBtns = (props) => {
-    const { data, handleBtns, addShow, removeShow, history, selectedRow, setLoading, onSearch, exportShow, exportMethod, config } = props
+    const { data, handleBtns, addShow, removeShow, history, selectedRow, setLoading, onSearch, exportShow, exportMethod, config, batchRemoveMethod } = props
     const skipAdd = () => {
         history.push(history.location.pathname + '/add')
     }
     const batchRemove = useCallback(() => {
+        if (!batchRemoveMethod) return ;
         if (selectedRow.length === 0){
             errorTip('未选择数据')
         }else{
-            setLoading(true)
-            setTimeout(() => {
-                setLoading(false)
-                successTip('操作成功')
-                onSearch()
+            confirm({
+                title: "确认删除？",
+                onOk: (close) => {
+                    close()
+                    setLoading(true)
+                    batchRemoveMethod({selectedRow, onSearch}).then(res => {
+                        setLoading(false)
+                        if (!res) return;
+                        if (res.status !== 200) return errorTip(res.msg)
+                        onSearch()
+                        successTip()
+                    })
+                }
+            })
 
-            }, 1000)
         }
-    }, [selectedRow, setLoading, onSearch])
+    }, [selectedRow, setLoading, onSearch, batchRemoveMethod])
     const exportData = useCallback(() => {
         if (exportMethod){
             setLoading(true)

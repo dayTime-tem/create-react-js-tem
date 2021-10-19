@@ -107,7 +107,7 @@ export const editFiled = [
             {type: 'select', filed: 'industry', name: '行业', required: true, options: industry, mode: 'multiple'},
             {type: 'input', filed: 'juridical_person', name: '法人', required: true},
             {type: 'select', filed: 'enterprise_status', name: '企业状态', required: true, options: companyStatus},
-            {type: 'check', filed: 'track', name: '所属赛道', required: true, options: track, className: 'whole'},
+            {type: 'checkRange', filed: 'track', name: '所属赛道', required: true, options: track, className: 'whole'},
             {type: 'select', filed: 'finance_round', name: '融资轮次', required: true, options: finance_round},
             {type: 'multitermInputModal', filed: 'capital_firm', name: '投资机构品牌', className: 'whole'},
             {type: 'select', filed: 'ratepaying_credit', name: '纳税信用评级', required: true, options: ratepaying_credit},

@@ -3,7 +3,7 @@
  * @Date: 2021/8/2
  */
 import React, { useCallback } from "react"
-import {FormDate, FormInput, FormSelect, FormGetCode, FormGraphValidate, FormDetailsShow, FormCheckBox, FormCascader, FormRadio, FormMultitermInputModal} from "../widget";
+import {FormDate, FormInput, FormSelect, FormGetCode, FormGraphValidate, FormDetailsShow, FormCheckRangeBox, FormCascader, FormRadio, FormMultitermInputModal} from "../widget";
 
 import classNames from "classnames";
 const formComponents = {
@@ -12,7 +12,7 @@ const formComponents = {
     select: FormSelect,
     getCode: FormGetCode,
     graphValidate: FormGraphValidate,
-    check: FormCheckBox,
+    checkRange: FormCheckRangeBox,
     cascader: FormCascader,
     radio: FormRadio,
     multitermInputModal: FormMultitermInputModal,

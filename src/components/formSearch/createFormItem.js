@@ -3,14 +3,14 @@
  * @Date: 2021/7/28
  */
 import React, { useCallback, useEffect, useState, useRef } from "react"
-import { FormInput, FormDate, FormSelect, FormSelectInput, FormCheckBox, FormRadio } from "../widget"
+import { FormInput, FormDate, FormSelect, FormSelectInput, FormCheckRangeBox, FormRadio } from "../widget"
 import classNames from "classnames";
 import style from "./index.module.less"
 import { DownOutlined, UpOutlined } from "@ant-design/icons"
 const defaultProps = {
     labelCol: {span: 5}, wrapperCol: {span: 16}
 }
-const formComponents = {input: FormInput, date: FormDate, select: FormSelect, selectInput: FormSelectInput, check: FormCheckBox, radio: FormRadio}
+const formComponents = {input: FormInput, date: FormDate, select: FormSelect, selectInput: FormSelectInput, checkRange: FormCheckRangeBox, radio: FormRadio}
 
 const CreateFormItem = ({ form, searchFiled, filedFold }) =>{
     const [showFiled, setShowFiled] = useState([])

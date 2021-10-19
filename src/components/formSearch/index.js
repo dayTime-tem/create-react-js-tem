@@ -27,7 +27,7 @@ const FormSearch = (props, ref) => {
         searchMethod,
         setSearchFiled,
         beforeShowData,
-        addShow, removeShow, exportShow, exportMethod, filedFold
+        addShow, removeShow, exportShow, exportMethod, filedFold, batchRemoveMethod
     } = props
     const [form] = Form.useForm();
     const [data, setData] = useState([]) // table列表数据
@@ -39,6 +39,11 @@ const FormSearch = (props, ref) => {
             resolve(res)
         }).catch(() => {})
     }).catch(() => {}), [form])
+    useEffect(() => {
+        let map = new Set(data.map(v => v[tableParams.rowKey]))
+        setSelectedRow(selectedRow.filter(v => map.has(v[tableParams.rowKey])))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, tableParams.rowKey])
     const searchApi = useCallback((params, url, type) => {
         // history[(type === 'init' ? 'replace' : 'push')](history.location.pathname + setUrlParams(url))
         history.push(history.location.pathname + setUrlParams(url))
@@ -119,7 +124,7 @@ const FormSearch = (props, ref) => {
             <div className={classNames('card')}>
                 <div className={classNames(style.handleBox)}>
                     <TableHandleBtns handleBtns={handleBtns} onSearch={onSearch} {...{data, history, searchFiled, setSearchFiled, form, originalData,
-                        addShow, removeShow, config, selectedRow, setLoading, exportShow, exportMethod}} />
+                        addShow, removeShow, config, selectedRow, setLoading, exportShow, exportMethod, batchRemoveMethod}} />
                 </div>
                 <BasicTable {...{form, columns: handleColumns, data, tableParams, setLoading, paginationData, onChangePagination, selectedRow, setSelectedRow}} onSearch={onSearch} />
             </div>
