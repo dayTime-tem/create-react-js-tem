@@ -5,11 +5,11 @@
 import React from "react";
 import { Button } from "antd"
 import * as editConfig from "./edit.config"
-import {baseInfoFindList} from "../../service";
+import {baseInfoFindList, downloadFirmList, deleteFirm} from "../../service";
 import { confirm, errorTip, successTip } from "@/utils"
 import moment from "moment";
 import {AuthPermission} from "@/components";
-import { finance_round, market, track, ratepaying_credit, fiscal_revenue,
+import { market, track, ratepaying_credit, fiscal_revenue,
     social_security, quit_rate, professional_expansion_rate, performance_growth_rate, debt_ratio, research_proportion, survival_time} from "./options"
 
 const registeredCapital = [
@@ -41,7 +41,7 @@ export const searchFiled = [
     {type: 'checkRange', filed: "register_capital", name: '注册资本', className: 'whole', options: registeredCapital, customRange: {type: 'text', unit: '万'}, wrapperCol: {span: 18}},
     {type: 'checkRange', filed: "register_time", name: '成立时间', className: 'whole', options: createTime, customRange: {type: 'date'}, wrapperCol: {span: 18}},
     {type: 'checkRange', filed: "insure", name: '参保人数', className: 'whole', options: contributors, customRange: {type: 'text', unit: '人'}, wrapperCol: {span: 19}},
-    {type: 'checkRange', filed: "finance_round", name: '融资信息', className: 'whole', options: finance_round, wrapperCol: {span: 18}},
+    {type: 'checkRange', filed: "finance_round", name: '融资轮次', className: 'whole', options: [], wrapperCol: {span: 18}, customRange: {type: 'text', unit: '轮'}},
     {type: 'checkRange', filed: "market", name: '上市状态', className: 'whole', options: market, wrapperCol: {span: 18}},
     {type: 'checkRange', filed: "track", name: '赛道', className: 'whole', options: track, wrapperCol: {span: 18}},
     {type: 'checkRange', filed: "ratepaying_credit", name: '纳税信用评级', className: 'whole', options: ratepaying_credit, wrapperCol: {span: 18}},
@@ -67,21 +67,26 @@ export const columns = [
         dataIndex: '详情',
         key: '详情',
         render: (text, record) => (
-            <div>
-                <div style={{margin: "4px 0"}}>注册资本：{record.register_capital}万</div>
+            <div style={{display: "inline-block", textAlign: 'left'}}>
+                <div style={{margin: "4px 0"}}>注册资本：{record.register_capital ? record.register_capital + "万" : "暂无信息"}</div>
                 <div style={{margin: "4px 0"}}>成立时间：{moment(record.register_time).format("YYYY-MM-DD")}</div>
-                <div style={{margin: "4px 0"}}>参保人数：{record.insure}人</div>
-                <div style={{margin: "4px 0"}}>融资信息：{finance_round.find(v => v.id / 1 === record.finance_round / 1)?.name}</div>
-                <div style={{margin: "4px 0"}}>上市状态：{market.find(v => v.id / 1 === record.market / 1)?.name}</div>
-                <div style={{margin: "4px 0"}}>赛道：{record.track?.map(v => (track.find(item => item.id / 1 === v / 1)).name).join('、')}</div>
+                <div style={{margin: "4px 0"}}>参保人数：{record.insure ? record.insure + "人" : "暂无信息"}</div>
+                <div style={{margin: "4px 0"}}>上市状态：{market.find(v => v.id / 1 === record.market / 1)?.name || "暂无信息"}</div>
             </div>
         ),
+    },
+    {
+        title: '赛道',
+        dataIndex: 'track',
+        key: 'track',
+        render: text => <div style={{margin: "4px 0"}}>{text && text?.length > 0 ? text?.map(v => (track.find(item => item.id / 1 === v / 1)).name).join('、') : "暂无信息"}</div>,
+        width: 240
     },
     {
         title: '得分',
         dataIndex: 'total_score',
         key: 'total_score',
-        render: (text, record, index, props) => (<div>{text}</div>),
+        render: text => (<div style={{fontWeight: 600}}>{text}</div>),
         width: 240
     },
     {
@@ -90,24 +95,34 @@ export const columns = [
         key: 'id',
         render: (text, record, index, props) => (
             <div className="handleBtnBoX">
-                <Button onClick={() => props.history.push(props.history.location.pathname + '/info/' + text)}>更多详情</Button>
-                <AuthPermission permission="add"><Button onClick={() => props.history.push(props.history.location.pathname + '/edit/' + text)}>修改</Button></AuthPermission>
-                <AuthPermission permission="remove"><Button onClick={() => removeData(record, props)}>删除</Button></AuthPermission>
+                <Button style={{width: 90}} onClick={() => props.history.push(props.history.location.pathname + '/info/' + text)}>更多详情</Button>
+                <AuthPermission permission="can_add"><Button style={{width: 90}} onClick={() => props.history.push(props.history.location.pathname + '/edit/' + text)}>修改</Button></AuthPermission>
+                <AuthPermission permission="can_delete"><Button style={{width: 90}} onClick={() => removeData(record, props)}>删除</Button></AuthPermission>
             </div>
         ),
-        width: 300
+        width: 330
     },
 ]
 
 const beforeSearch = (params) => {
-    const { name, register_capital, register_time, insure, finance_round, market, track, pageSize, current } = params
+    const { name, register_capital, register_time, insure, finance_round, market, track, pageSize, current,
+        ratepaying_credit, fiscal_revenue, social_security, quit_rate, professional_expansion_rate, performance_growth_rate, debt_ratio, research_proportion, survival_time} = params
     let data = {name, pageSize, current}
     data['register_capital'] = {options: register_capital.options || [], range: handleData(register_capital.customRange, '-','万')}
     data['register_time'] = {options: register_time.options || [], range: handleData(register_time.customRange, ' ~ ','万')}
     data['insure'] = {options: insure.options || [], range: handleData(insure.customRange, '-','人')}
-    data['finance_round'] = {options: finance_round.options || []}
+    data['finance_round'] = {options: finance_round.options || [], range: handleData(finance_round.customRange, '-','轮')}
     data['market'] = {options: market.options || []}
     data['track'] = {options: track.options || []}
+    data['ratepaying_credit'] = {options: ratepaying_credit.options || []}
+    data['fiscal_revenue'] = {options: fiscal_revenue.options || []}
+    data['social_security'] = {options: social_security.options || []}
+    data['quit_rate'] = {options: quit_rate.options || []}
+    data['professional_expansion_rate'] = {options: professional_expansion_rate.options || []}
+    data['performance_growth_rate'] = {options: performance_growth_rate.options || []}
+    data['debt_ratio'] = {options: debt_ratio.options || []}
+    data['research_proportion'] = {options: research_proportion.options || []}
+    data['survival_time'] = {options: survival_time.options || []}
     return data
 }
 const handleData = (data, separator, unit) => {
@@ -119,21 +134,19 @@ const handleData = (data, separator, unit) => {
 }
 
 const removeData = (data, props) => {
+    const { id } = data
     const { setLoading, onSearch } = props
     confirm({
         title: "确认删除？",
         onOk: (close) => {
             close()
             setLoading(true)
-            // 模拟发请求
-            let res = {status: 200}
-            setTimeout(() => {
-                //页面刷新
-                if (res.status !== 200) return errorTip(res.message)
+            deleteFirm({ids: [id]}).then(res => {
+                setLoading(false)
+                if (res.status !== 200) return errorTip(res.msg)
                 onSearch()
                 successTip()
-                setLoading(false)
-            }, 1000)
+            })
         }
     })
 };
@@ -145,12 +158,13 @@ export const formSearchProps = {
         rowKey: 'id',
         rowSelection: true, // 列表是否可勾选
     },
-    addShow: 'add', //添加按钮
-    removeShow: 'remove', // 批量删除按钮
+    addShow: 'can_add', //添加按钮
+    removeShow: 'can_delete', // 批量删除按钮
     exportShow: true, // 导出按钮
-    // exportMethod: //导出api接口
+    exportMethod: ({data, selectedRow}) => downloadFirmList({ids: (selectedRow.length === 0 ? data : selectedRow).map(v => v.id)}),//导出api接口
     searchMethod: baseInfoFindList,
-    filedFold: 3, // 展示个数
+    filedFold: 4, // 展示个数
+    batchRemoveMethod: ({selectedRow}) => deleteFirm({ids: selectedRow.map(v => v.id)})
 }
 export {
     editConfig

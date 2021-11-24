@@ -31,10 +31,12 @@ const editFiled = [
     }
 ]
 
-const ChangePwdModal = (props) => {
+const ChangePwdModal = ({children, width}) => {
     const modal  = useRef()
     const form  = useRef()
     const changePwdBtn = () => {
+        const { getForm } = form.current || {}
+        getForm && getForm()?.resetFields()
         modal.current.showModal()
     }
     const onSubmit = (startLoad, closeLoad, closeModal) => {
@@ -42,10 +44,10 @@ const ChangePwdModal = (props) => {
         getForm().validateFields().then(data => {
             startLoad()
             const { password, newPassword } = data
-            changePassword({password: md5(password), newPassword: md5(newPassword)}).then(res => {
+            changePassword({old_password: md5(password), new_password: md5(newPassword)}).then(res => {
                 closeLoad()
                 getForm().resetFields()
-                if (res.status !== window.state.SUCCESS) return errorTip(res.message)
+                if (res.status !== window.state.SUCCESS) return errorTip(res.msg, "错误")
                 successTip(res.message)
                 clearLoginInfo()
             })
@@ -53,13 +55,14 @@ const ChangePwdModal = (props) => {
     }
     return (
         <>
-            <span className={classNames(style.changePwdBtn, style.btn)} onClick={changePwdBtn}>修改密码</span>
+            {children ? <span onClick={changePwdBtn}>{children}</span> : <span className={classNames(style.changePwdBtn, style.btn)}>修改密码</span>}
             <BasicModal
                 title={'修改密码'}
                 ref={modal}
                 asyncOk={onSubmit}
                 okText="提交"
                 cancelText="取消"
+                width={width}
             >
                 <FormEdit ref={form} editFiled={editFiled} />
             </BasicModal>

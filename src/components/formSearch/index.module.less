@@ -1,13 +1,37 @@
 .formContentBox{
   margin-top: 16px;
   padding-bottom: 0;
-  padding-top: 24px!important;
+  padding-top: 18px!important;
   .formHandleBtn{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    background: #fff;
+    height: 57px;
+    padding: 0 20px;
+    box-shadow: 0 1px 1px 0 #EAEAEA;
+    border-radius: 5px 5px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    .cardName{
+      span{
+        margin-left: 5px;
+        color: #344152;
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 18px;
+      }
+      display: flex;
+      line-height: 18px;
+      pointer-events: none;
+    }
     button{
-      margin: 0 8px;
+      margin: 0 15px;
+      &:last-child{
+        margin-right: 0;
+      }
     }
   }
 }
@@ -24,14 +48,16 @@
   overflow: hidden;
 }
 .spread{
-  text-align: center;
+  background: #F9FBFD;
+  border-radius: 5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   span{
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
-    color: rgba(171,61,70, .85);
-    &:hover{
-      color: rgba(171,61,70, 1);
-    }
+    color: #0E66DE;
   }
 }

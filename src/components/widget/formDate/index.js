@@ -17,7 +17,7 @@ const FormDate = (props) => {
             {...{initialValue}}
             rules={[{ required: required, message: `${name}不能为空！` }]}
         >
-            <DatePicker {...{showTime}} />
+            <DatePicker getPopupContainer={triggerNode => triggerNode.parentNode || document.body} {...{showTime}}  />
         </Form.Item>
     )
 }

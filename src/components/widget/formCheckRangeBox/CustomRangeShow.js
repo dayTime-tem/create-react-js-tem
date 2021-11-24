@@ -8,8 +8,15 @@ import moment from "moment";
 import {ExclamationCircleOutlined} from "@ant-design/icons";
 const { RangePicker } = DatePicker
 
+const inputStyle = {
+    width: '126px',
+    background: '#FFFFFF',
+    borderRadius: '22px',
+    textAlign: 'center'
+}
+
 const CustomRangeShow = (props) => {
-    const {value, onChange, customRange} = props
+    const {value, onChange, customRange, options} = props
     const [min, setMin] = useState('')
     const [max, setMax] = useState('')
     const [helpVisible, setHelpVisible] = useState(false)
@@ -31,17 +38,17 @@ const CustomRangeShow = (props) => {
     return (
         <>
             {   customRange && customRange?.type === 'text' &&
-                <span style={{marginLeft: 8, display: 'inline-block'}}>
+                <div style={{marginTop: options?.length ? 6 : 0, display: options?.length ? 'block' : 'inline-block'}}>
                         <span>自定义</span>
                         <span style={{padding: '0 8px'}}>
                             <Popover visible={helpVisible} title={null} content={(<span><ExclamationCircleOutlined style={{color: '#faad14', marginRight: 6}} />{help}</span>)} placement='bottomRight'>
-                                <Input style={{ width: 100, textAlign: 'center' }} placeholder="最低" value={min} onChange={e => changeValue(e, 'min')} />
-                                <Input style={{width: 30, borderLeft: 0, borderRight: 0, pointerEvents: 'none',}} placeholder="-" disabled />
-                                <Input style={{width: 100, textAlign: 'center'}} placeholder="最高" value={max} onChange={e => changeValue(e, 'max')} />
+                                <Input style={inputStyle} placeholder="最低" value={min} onChange={e => changeValue(e, 'min')} />
+                                <div className="transverseLine" />
+                                <Input style={inputStyle} placeholder="最高" value={max} onChange={e => changeValue(e, 'max')} />
                             </Popover>
                         </span>
                     {customRange?.unit && <span>{customRange.unit}</span>}
-                    <Button style={{marginLeft: 8}} type="primary" ghost onClick={() => {
+                    <Button style={{marginLeft: 8, marginRight: 10}} className="handleBtn confirm" onClick={() => {
                         if (min.length === 0 || max.length === 0) return;
                         if (parseInt(min) > parseInt(max)){
                             setHelp('最高值不能小于最低值')
@@ -59,10 +66,15 @@ const CustomRangeShow = (props) => {
                         }
                         setMax('')
                     }}>确定</Button>
-                    </span>
+                    {value && value.length > 0 && (
+                        <div style={{display: 'inline-flex', flexWrap: 'wrap', margin: '8.5px 0'}}>
+                            {value.map((v, i) => <Tag style={{color: '#0084FF', margin: '0 10px', fontSize: 14, padding: 3, borderRadius: 3}} key={v + i} closable onClose={() => removeTag(v)}>{v}</Tag>)}
+                        </div>
+                    )}
+                    </div>
             }
             {   customRange && customRange?.type === 'date' &&
-                <span style={{marginLeft: 8, display: 'inline-block'}}>
+                <div style={{marginTop: options?.length ? 6 : 0, display: options?.length ? 'block' : 'inline-block'}}>
                         <span>自定义</span>
                         <span style={{padding: '0 8px'}}>
                             <Popover visible={helpVisible} title={null} content={(<span><ExclamationCircleOutlined style={{color: '#faad14', marginRight: 6}} />{help}</span>)} placement='bottomRight'>
@@ -70,7 +82,7 @@ const CustomRangeShow = (props) => {
                             </Popover>
                         </span>
                     {customRange?.unit && <span>{customRange.unit}</span>}
-                    <Button style={{marginLeft: 8}} type="primary" ghost onClick={() => {
+                    <Button style={{marginLeft: 8, marginRight: 10}} className="handleBtn confirm" onClick={() => {
                         if (date.length === 0) return;
                         if (!(value || []).includes(`${date[0]} ~ ${date[1]}`)){
                             onChange([...(value || []), `${date[0]} ~ ${date[1]}`])
@@ -81,13 +93,13 @@ const CustomRangeShow = (props) => {
                         }
                         setDate([])
                     }}>确定</Button>
-                    </span>
+                    {value && value.length > 0 && (
+                        <div style={{display: 'inline-flex', flexWrap: 'wrap', margin: '8.5px 0'}}>
+                            {value.map((v, i) => <Tag style={{color: '#0084FF', margin: '0 10px', fontSize: 14, padding: 3, borderRadius: 3}} key={v + i} closable onClose={() => removeTag(v)}>{v}</Tag>)}
+                        </div>
+                    )}
+                    </div>
             }
-            {value && value.length > 0 && (
-                <div>
-                    {value.map((v, i) => <Tag style={{borderColor: '#0084FF', color: '#0084FF', margin: 4, fontSize: 14}} key={v + i} closable onClose={() => removeTag(v)}>{v}</Tag>)}
-                </div>
-            )}
         </>
     )
 }

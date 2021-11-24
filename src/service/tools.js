@@ -28,7 +28,7 @@ export const download = ({url, method, fileName = "文件", extension = "xlsx", 
         if (headers["content-disposition"] && headers["content-disposition"].includes("filename")){
             name = headers["content-disposition"].split("filename=")[1].split(";")[0].replace(/"/g, "")
         }
-        let url = window.URL.createObjectURL(new Blob([res.data]));
+        let url = window.URL.createObjectURL(new Blob([data]));
         let link = document.createElement("a");
         link.style.display = "none";
         link.href = url;

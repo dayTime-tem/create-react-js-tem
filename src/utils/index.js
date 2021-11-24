@@ -1,5 +1,6 @@
 import { notification, Modal, Tooltip } from "antd"
 import { ExclamationCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons"
+export * from "./globalFun"
 
 export const getType = (param) => Object.prototype.toString.call(param).split(' ')[1].split(']')[0].toLowerCase()
 
@@ -94,10 +95,16 @@ export const validationPhone = (value) => /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(v
  * value: String
  */
 export const validationNumber = (value) => !/[^0-9|.]/.test(value)
+export const validationInteger = (value) => !/[^0-9]/.test(value)
 export const formValidationNumber = (value, callBack) => {
     if (value && !validationNumber(value)) return callBack('只能输入数字')
     return callBack()
 }
+export const formValidationInteger = (value, callBack) => {
+    if (value && !validationInteger(value)) return callBack('只能输入整数')
+    return callBack()
+}
+
 
 /**
  * value: any
@@ -149,7 +156,7 @@ export const confirm = ({title, content, onOk, onCancel, okText = '确认', canc
         icon: icon ? <ExclamationCircleOutlined /> : null,
         title, content, okText, cancelText,
         onOk(close) {
-            return onOk ? onOk(close) : close()
+           return onOk ? onOk(close) : close()
         },
         onCancel(close) {
             return onCancel ? onCancel(close) : close()

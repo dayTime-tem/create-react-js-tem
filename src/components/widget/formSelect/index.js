@@ -24,6 +24,7 @@ const FormSelect = (props) => {
                 allowClear
                 mode={mode}
                 maxTagCount={1}
+                getPopupContainer={triggerNode => triggerNode.parentNode || document.body}
             >
                 {options.map(v => (
                     <Option key={v.id} value={v.id}>{v.name}</Option>

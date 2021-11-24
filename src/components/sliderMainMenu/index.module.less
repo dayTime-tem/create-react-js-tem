@@ -1,0 +1,95 @@
+.main{
+  height: 100%;
+  background: linear-gradient(0deg, #3E4277, #252C4B);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  .systemName{
+    img{
+      width: 238.5px;
+      height: 22px;
+    }
+    font-family: PingFang SC;
+    font-size: 22px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, rgb(152,196,255), rgb(184,234,253));
+    font-weight: bold;
+    text-align: center;
+    padding-top: 34.5px;
+    pointer-events: none;
+  }
+  .userCard{
+    height: 255.5px;
+    margin-top: 38.5px;
+    text-align: center;
+    img{
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+    }
+    .userName{
+      margin-top: 24px;
+      font-size: 28px;
+      font-family: PingFang SC;
+      color: #FFFFFF;
+      height: 22px;
+      line-height: 22px;
+    }
+    .handle{
+      margin-top: 33px;
+      Button{
+        margin: 0 9.5px;
+      }
+    }
+  }
+}
+.menu{
+  flex: 1;
+  :global{
+    .ant-menu{
+      height: 100%;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+    }
+    .horizontal-iconModal{
+
+    }
+    .vertical-iconModal{
+      &>.ant-menu-title-content{
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+    .ant-menu > .ant-menu-item{
+      flex: 1;
+      max-height: 175px;
+      text-align: center;
+      padding: 0!important;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+      align-content: center;
+      min-height: 80px;
+      img{
+        height: 40px;
+      }
+      &>.ant-menu-title-content{
+        flex: none;
+      }
+      &>a, &>.ant-menu-title-content>a{
+        font-size: 18px;
+        color: #FFFFFF;
+        font-weight: bold;
+      }
+      &.ant-menu-item-selected{
+        background-color: rgba(0, 0, 0, 0.2);
+        &::after{
+          left: 0;
+          right: inherit;
+        }
+      }
+    }
+  }
+}

@@ -7,11 +7,11 @@ import { Menu } from 'antd';
 import routes  from '@/routes/config'
 import { AppstoreOutlined } from "@ant-design/icons"
 import { Link } from 'react-router-dom';
-import {AuthPermission} from "@/components";
-
+import {permissionFilter} from "@/utils";
 
 const { Item, SubMenu } = Menu
 const menus = routes['menus']
+const mode = routes.mode
 const recombineOpenKeys = (openKeys) => {
     let res = []
     let tem = ''
@@ -22,8 +22,7 @@ const recombineOpenKeys = (openKeys) => {
     return res
 }
 const MenuItems = (props) => {
-    const permissionGroup = JSON.parse(window.localStorage.getItem('permissionGroup') || "[]" )
-    const { location } = props
+    const { location, className } = props
     const [selectedKeys, setSelectedKeys] = useState([])
     const [openKeys, setOpenKeys] = useState([])
     useEffect(() => {
@@ -33,17 +32,22 @@ const MenuItems = (props) => {
         }
     }, [location?.pathname])
     const createItem = useCallback((v) => {
-        return (<Item key={v.key}><Link to={v.key + (v.query || '')}><span>{v.title}</span></Link></Item>)
+        return (<Item key={v.key} icon={v.icon} className={v.iconModal + '-iconModal'}><Link to={v.key + (v.query || '')}><span>{v.title}</span></Link></Item>)
     }, [])
     const createSubMenu = useCallback(config => {
         return (
-            (config.subs && config.subs.length > 0) ? <AuthPermission permission={config.permission}><SubMenu key={config.key} title={config.title} icon={config.icon ? config.icon : <AppstoreOutlined />}>{config.subs.map(v => createSubMenu(v))}</SubMenu></AuthPermission> : createItem(config)
+            (config.subs && config.subs.length > 0 && mode !== 1)
+                ? <SubMenu key={config.key} title={config.title} icon={config.icon ? config.icon : <AppstoreOutlined />}>
+                    {permissionFilter(config.subs).map(v => createSubMenu(v))}</SubMenu> :
+                createItem(config)
         )
     }, [createItem])
     return (
-        <Menu mode="inline" {...{selectedKeys, openKeys}} onOpenChange={keys => setOpenKeys(keys)}>
-            {menus.filter(v => !v.permission || (permissionGroup.includes('allPermission') || permissionGroup.includes(v.permission))).map(v => createSubMenu(v))}
-        </Menu>
+        <div className={className}>
+            <Menu mode="inline" {...{selectedKeys, openKeys}} onOpenChange={keys => setOpenKeys(keys)}>
+                {permissionFilter(menus).map(v => createSubMenu(v))}
+            </Menu>
+        </div>
     )
 }
 export default React.memo(MenuItems)

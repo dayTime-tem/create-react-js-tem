@@ -11,6 +11,7 @@ import FormEdit from "./formEdit";
 import TableHandleBtns from "./tableHandleBtns";
 import MenuItems from "./menuItems";
 import AuthPermission from "./authPermission";
+import SliderMainMenu from "./sliderMainMenu";
 
 export {
     ErrorBoundary,
@@ -22,4 +23,5 @@ export {
     MenuItems,
     CommitEdit,
     AuthPermission,
+    SliderMainMenu,
 }

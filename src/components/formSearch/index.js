@@ -4,15 +4,14 @@
  */
 import React, {useCallback, useEffect, useMemo, useState, useImperativeHandle} from "react";
 import { Form, Button } from "antd"
-import { BasicTable } from "../widget"
+import { BasicTable, CustomIcon } from "../widget"
 import style from "./index.module.less"
 import classNames from "classnames";
 import { TableHandleBtns } from "@/components"
 import { errorTip, setUrlParams } from "@/utils";
 import CreateFormItem from "./createFormItem";
 import {clearObj, sleep} from "../../utils";
-
-const { Item } = Form
+import icon from "@/img/icon-1.png"
 
 const FormSearch = (props, ref) => {
     const {
@@ -108,17 +107,20 @@ const FormSearch = (props, ref) => {
         <Form form={form}>
             {searchFiled && searchFiled.length > 0 && (
                 <div className={classNames('card', style.formContentBox)}>
-                    <CreateFormItem {...{form, searchFiled, filedFold}} />
                     <div className={classNames(style.formHandleBtn)}>
-                        <Item>
-                            <Button type="primary" onClick={() => onSearch({current: 1})}>
+                        <div className={classNames(style.cardName)}>
+                            <CustomIcon icon={icon} /><span>筛选搜索</span>
+                        </div>
+                        <div>
+                            <Button type="primary" className={classNames('searchBtn', 'handleBtn')} onClick={() => onSearch({current: 1})}>
                                 搜索
                             </Button>
-                            <Button htmlType="button" onClick={onReset}>
+                            <Button htmlType="button" className={classNames('resetBtn', 'handleBtn')} onClick={onReset}>
                                 重置
                             </Button>
-                        </Item>
+                        </div>
                     </div>
+                    <CreateFormItem {...{form, searchFiled, filedFold}} />
                 </div>
             )}
             <div className={classNames('card')}>

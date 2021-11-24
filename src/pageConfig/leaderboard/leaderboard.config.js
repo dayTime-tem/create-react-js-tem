@@ -4,7 +4,8 @@
  */
 import {Button} from "antd";
 import React from "react";
-import {trackList} from "../../service";
+import {downloadFirmRank, trackList} from "../../service";
+import moment from "moment";
 
 const rankType = [
     {id: 0, name: '综合实力排行'},
@@ -18,11 +19,16 @@ const rankType = [
     {id: 8, name: '互联网+'},
     {id: 9, name: '其他'},
 ]
-
+const market = [
+    {id: 0, name: '全部企业'},
+    {id: 1, name: '上市企业'},
+    {id: 2, name: '非上市企业'},
+]
 
 export const searchFiled = [
     {type: 'input', filed: "name", name: '关键词', className: 'whole', wrapperCol: {span: 6}},
     {type: 'radio', filed: "track", name: '排行榜类型', className: 'whole', options: rankType, wrapperCol: {span: 18}, initialValue: 0, radioType: 'button', required: true},
+    {type: 'select', filed: "market", name: '企业上市类型', options: market, initialValue: 0, required: true, className: 'whole', wrapperCol: {span: 6}},
 ]
 
 export const columns = [
@@ -38,10 +44,23 @@ export const columns = [
         key: 'name',
     },
     {
+        title: '详情',
+        dataIndex: '详情',
+        key: '详情',
+        render: (text, record) => (
+            <div style={{display: "inline-block", textAlign: 'left'}}>
+                <div style={{margin: "4px 0"}}>注册资本：{record.register_capital ? record.register_capital + "万" : "暂无信息"}</div>
+                <div style={{margin: "4px 0"}}>成立时间：{moment(record.register_time).format("YYYY-MM-DD")}</div>
+                <div style={{margin: "4px 0"}}>参保人数：{record.insure ? record.insure + "人" : "暂无信息"}</div>
+                <div style={{margin: "4px 0"}}>上市状态：{market.find(v => v.id / 1 === record.market / 1)?.name || "暂无信息"}</div>
+            </div>
+        ),
+    },
+    {
         title: '得分',
         dataIndex: 'total_score',
         key: 'total_score',
-        render: (text, record, index, props) => (<div>{text}</div>),
+        render: (text, record, index, props) => (<div style={{fontWeight: 600}}>{text}</div>),
         width: 240
     },
     {
@@ -70,6 +89,6 @@ export const formSearchProps = {
         rowKey: 'id',
     },
     exportShow: true, // 导出按钮
-    // exportMethod: //导出api接口
+    exportMethod: ({data}) => downloadFirmRank({data: data.map(v => ({id: v.id, index: v.index}))}),//导出api接口
     searchMethod: trackList,
 }

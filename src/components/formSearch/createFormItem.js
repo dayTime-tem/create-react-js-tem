@@ -8,7 +8,7 @@ import classNames from "classnames";
 import style from "./index.module.less"
 import { DownOutlined, UpOutlined } from "@ant-design/icons"
 const defaultProps = {
-    labelCol: {span: 5}, wrapperCol: {span: 16}
+    labelCol: {span: 6}, wrapperCol: {span: 17}
 }
 const formComponents = {input: FormInput, date: FormDate, select: FormSelect, selectInput: FormSelectInput, checkRange: FormCheckRangeBox, radio: FormRadio}
 
@@ -36,7 +36,7 @@ const CreateFormItem = ({ form, searchFiled, filedFold }) =>{
         <>
             <div>{createFormItems(showFiled)}</div>
             {filedFold && <div ref={hiddenBox} style={{height: `${spread}px`}} className={classNames(style.filed_box)}>{createFormItems(hiddenFiled)}</div>}
-            {filedFold && <div className={style.spread}><span onClick={() => onSpread()}>{spread === 0 ? <span>展开更多<DownOutlined /></span> : <span>收起<UpOutlined /></span>}</span></div>}
+            {filedFold && <div className={style.spread}><span onClick={() => onSpread()}>{spread === 0 ? <span>展开更多  <DownOutlined /></span> : <span>收起  <UpOutlined /></span>}</span></div>}
         </>
     )
 }

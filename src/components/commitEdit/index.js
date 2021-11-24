@@ -11,6 +11,12 @@ import style from "./index.module.less"
 import {errorTip} from "@/utils";
 import {successTip} from "../../utils";
 import {AuthPermission} from "@/components";
+import {CustomIcon} from "../widget";
+import add from "@/img/icon-3.png"
+import detail from "@/img/icon-4.png"
+import edit from "@/img/icon-5.png"
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons"
+
 
 const CommitEdit = (props) => {
     const { config, type, history, id } = props
@@ -48,15 +54,15 @@ const CommitEdit = (props) => {
         <div>
             <Spin spinning={loading}>
                 <div className={classNames('card', style.minHeight)}>
-                    {type === 'add' && <div className={style.title}>添加{editProps.name}</div>}
-                    {type === 'edit' && <div className={style.title}>修改{editProps.name}</div>}
-                    {type === 'info' && <div className={style.title}>{editProps.name}详情</div>}
+                    {type === 'add' && <div className={style.title}><CustomIcon icon={add} /><span>添加{editProps.name}</span></div>}
+                    {type === 'edit' && <div className={style.title}><CustomIcon icon={edit} /><span>修改{editProps.name}</span></div>}
+                    {type === 'info' && <div className={style.title}><CustomIcon icon={detail} /><span>{editProps.name}详情</span></div>}
                     <FormEdit ref={form} {...{config, type, editFiled, editProps, id}} {...editProps} {...props} setLoading={setLoad} />
                 </div>
                 <div className={classNames(style.btnsBox)}>
-                    <Button onClick={() => history.go(-1)} danger ghost>关闭</Button>
+                    <Button className={classNames('handleBtn')} onClick={() => history.go(-1)} danger ghost><RollbackOutlined />关闭</Button>
                     {   type !== 'info' && (
-                        <AuthPermission permission={editProps.savePermission}><Button type="primary" size='large' style={{marginLeft: 12}} onClick={save}>保存</Button></AuthPermission>
+                        <AuthPermission permission={editProps.savePermission}><Button type="primary" className={classNames('handleBtn')} style={{marginLeft: 12}} onClick={save}><CheckOutlined />保存</Button></AuthPermission>
                     )}
                 </div>
             </Spin>

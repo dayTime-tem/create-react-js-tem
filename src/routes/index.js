@@ -2,6 +2,7 @@ import React from "react";
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import AllComponents from '../page';
 import routesConfig from './config';
+import { isArray } from "@/utils"
 
 const CRouter = (props) => {
     const permissionGroup = JSON.parse(window.localStorage.getItem('permissionGroup') || "[]" )
@@ -28,7 +29,7 @@ const CRouter = (props) => {
     return (
         <Router>
             <Switch>
-                {Object.keys(routesConfig).map((key) => createRoute(key))}
+                {Object.keys(routesConfig).map((key) => isArray(routesConfig[key]) && createRoute(key))}
                 <Route render={() => <Redirect to="/404" />} />
             </Switch>
         </Router>

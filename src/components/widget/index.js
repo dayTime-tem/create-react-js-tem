@@ -3,6 +3,7 @@
  * @Date: 2021/7/14
  */
 import Img from "./img" // 图片展示
+import CustomIcon from "./icon"
 import UserHandleCard from "./userHandleCard/index"; // 个人信息card
 import FormInput from "./formInput"; // 表单 - 基础输入框
 import FormDate from "./formDate"; // 表单 - 基础日期选择器
@@ -19,6 +20,6 @@ import FormRadio from './formRadio' //表单 - 单选项
 import FormMultitermInputModal from './formMultitermInputModal' //表单 - 多项输入弹窗
 
 export {
-    Img, BasicTable, UserHandleCard, FormInput, FormDate, FormSelect, FormSelectInput, BasicModal, FormGetCode, FormGraphValidate, FormDetailsShow, FormCheckRangeBox, FormCascader, FormRadio
+    Img, CustomIcon, BasicTable, UserHandleCard, FormInput, FormDate, FormSelect, FormSelectInput, BasicModal, FormGetCode, FormGraphValidate, FormDetailsShow, FormCheckRangeBox, FormCascader, FormRadio
     ,FormMultitermInputModal
 }

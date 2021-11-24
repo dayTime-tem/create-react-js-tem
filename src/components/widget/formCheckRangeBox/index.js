@@ -22,7 +22,7 @@ const FormCheckRangeBox = (props) => {
                 </Checkbox.Group>
             </Form.Item>
             {
-                <Form.Item noStyle name={[filed, 'customRange']}><CustomRangeShow customRange={customRange} /></Form.Item>
+                <Form.Item noStyle name={[filed, 'customRange']}><CustomRangeShow options={options} customRange={customRange} /></Form.Item>
             }
         </Form.Item>
     )

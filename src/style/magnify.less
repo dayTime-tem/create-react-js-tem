@@ -1,0 +1,66 @@
+*{
+  font-size: 15px;
+}
+.ant-form-item-label > label{
+  font-size: 15px;
+}
+.ant-form-item-label > label, .ant-form-item-control-input, .ant-select-item, .ant-cascader-menu-item{
+  min-height: 45px;
+}
+.ant-picker,
+.ant-input,
+.ant-select-selector {
+  height: 45px!important;
+}
+.ant-select-selector > span.ant-select-selection-item,
+.ant-select-selector > span.ant-select-selection-placeholder,
+.ant-checkbox-group, .ant-select-item, .ant-cascader-menu-item
+{
+  line-height: 45px!important;
+}
+.ant-cascader-menu{
+  height: 240px;
+}
+.ant-form-item-explain, .ant-form-item-extra{
+  min-height: 30px;
+}
+.ant-pagination{
+  height: 50px;
+  .ant-pagination-options-size-changer{
+    width: 150px;
+    height: 50px;
+    .ant-select-arrow{
+      top: 45%;
+      right: 34px;
+    }
+  }
+  .ant-pagination-prev, .ant-pagination-item, .ant-pagination-jump-next, .ant-pagination-jump-prev, .ant-pagination-next{
+    margin: 0;
+    height: 50px;
+    width: 50px;
+    a{
+      line-height: 48px;
+    }
+  }
+  .ant-pagination-options{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    .ant-pagination-options-quick-jumper{
+      margin: 0;
+    }
+  }
+}
+.ant-form-item-control-input > .ant-form-item-control-input-content > input,
+.ant-cascader-picker > input,
+.ant-select .ant-select-selector,
+.ant-picker, .ant-input-password{
+  border-radius: 22px!important;
+}
+.ant-table-thead > tr > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
+  display: none;
+}
+.ant-checkbox-indeterminate .ant-checkbox-inner::after{
+  width: 8.5px;
+  height: 8.5px;
+}

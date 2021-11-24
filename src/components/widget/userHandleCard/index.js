@@ -15,7 +15,7 @@ const UserHandleCard = function (props){
     const registerInfo = JSON.parse(window.localStorage.getItem('registerInfo') || "{}")
     const logoutBtn = () => {
         setLoad(true)
-        logout().then(res => {
+        logout(registerInfo).then(res => {
             setLoad(false)
             if (res.status !== window.state.SUCCESS) return errorTip(res.message)
             successTip("操作成功")
@@ -25,13 +25,13 @@ const UserHandleCard = function (props){
     return (
         <Popover title={(
             <div className={style.title}>
-                欢迎使用 四川省网信企业数据库
+                欢迎使用 {window.systemName}
             </div>
         )} content={(
             <div>
                 <ul className={style.handle}>
                     <li className={classNames(style.txt)}>用户名：{registerInfo?.userName}</li>
-                    <li>
+                    <li  className={style.handleBtn}>
                         <ChangePwdModal {...props} />
 
                         <span className={classNames(style.logoutBtn, style.btn)} onClick={logoutBtn}>安全退出</span>

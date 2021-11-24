@@ -29,7 +29,7 @@ const DetailsShow = (props) => {
             case "input":
                 return <span>{!isNoneVal(value) ? value : defaultDetails}</span>
             case "date":
-                return <span>{!isNoneVal(value) ? moment(value).format("YYYY-MM-DD HH:mm:ss") : defaultDetails}</span>
+                return <span>{!isNoneVal(value) ? moment(value).format("YYYY-MM-DD") : defaultDetails}</span>
             case "select":
                 return <span>{(!isNoneVal(value) && value?.length !== 0)
                     ? isArray(value) ? value.map(v => optionsMap[v]).join('、') : optionsMap[value]
