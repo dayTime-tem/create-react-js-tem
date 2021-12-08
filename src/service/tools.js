@@ -1,6 +1,7 @@
 import axios from "axios";
 import { errorTip, clearLoginInfo } from "@/utils";
 axios.defaults.withCredentials = true; //允许携带cookie
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 export const get = (url, params, config, msg = '接口异常') =>
     axios
         .get(url, {
@@ -12,7 +13,7 @@ export const get = (url, params, config, msg = '接口异常') =>
 
 export const post = (url, data, config, msg = '接口异常') =>
     axios
-        .post(url, data, config)
+        .post(url, data, Object.assign({headers: { 'content-type': 'application/x-www-form-urlencoded' }}, config))
         .then(res => LogOnToCheck(res.data))
         .catch(err => errorTip(msg))
 

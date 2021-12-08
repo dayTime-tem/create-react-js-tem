@@ -1,19 +1,19 @@
-variables:
-  IMAGE_NAME: datalab
-  SRC_DIR: dist/
+#variables:
+#  IMAGE_NAME: datalab
+#  SRC_DIR: dist/
 #  BUCKET: 
 #  PREFIX: cdn/reply/
-stages:
-  - build
+#stages:
+#  - build
 #  - upload
 #  - publish
-include:
-  - project: 'thecover/ci-template'
-    ref: master
-    file: 'standard-ci-base.yml'
-  - project: 'thecover/ci-template'
-    ref: master
-    file: 'build/yarn-builder.yml'
+#include:
+#  - project: 'thecover/ci-template'
+#    ref: master
+#    file: 'standard-ci-base.yml'
+#  - project: 'thecover/ci-template'
+#    ref: master
+#    file: 'build/yarn-builder.yml'
 #  - project: 'thecover/ci-template'
 #    ref: master
 #    file: 'upload/qiniu.yml'

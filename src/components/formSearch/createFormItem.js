@@ -36,7 +36,7 @@ const CreateFormItem = ({ form, searchFiled, filedFold }) =>{
         <>
             <div>{createFormItems(showFiled)}</div>
             {filedFold && <div ref={hiddenBox} style={{height: `${spread}px`}} className={classNames(style.filed_box)}>{createFormItems(hiddenFiled)}</div>}
-            {filedFold && <div className={style.spread}><span onClick={() => onSpread()}>{spread === 0 ? <span>展开更多  <DownOutlined /></span> : <span>收起  <UpOutlined /></span>}</span></div>}
+            {filedFold && searchFiled.length > filedFold && <div className={style.spread}><span onClick={() => onSpread()}>{spread === 0 ? <span>展开更多  <DownOutlined /></span> : <span>收起  <UpOutlined /></span>}</span></div>}
         </>
     )
 }

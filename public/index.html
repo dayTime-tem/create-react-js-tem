@@ -10,7 +10,7 @@
       content="Web site created using create-react-app"
     />
 <!--    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />-->
-    <title>四川省网信企业数据库</title>
+    <title></title>
     <script>
       /**
        * 系统环境配置, 用于配置全局公共数据信息
@@ -19,6 +19,12 @@
         SUCCESS: 200, //成功状态
         AUTH_ERO: 403, //权限验证失败
       };
+      window.systemName = "四川省网信企业数据库"
+      window.isMagnify = false //是否使用放大版的form组件
+      window.defaultGo = "/app/baseInfoManagement"
+    </script>
+    <script>
+      document.getElementsByTagName("title")[0].innerText = window.systemName
     </script>
   </head>
   <body>

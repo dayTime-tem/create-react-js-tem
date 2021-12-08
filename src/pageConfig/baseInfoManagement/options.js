@@ -110,11 +110,11 @@ export const survival_time = [
 ]
 //纳税信用评级
 export const ratepaying_credit = [
-    {id: 1, name: 'A级'},
-    {id: 2, name: 'B级'},
-    {id: 3, name: 'M级'},
-    {id: 4, name: 'C级'},
-    {id: 5, name: 'D级'},
+    {id: 1, name: 'xx'},
+    {id: 2, name: 'xx'},
+    {id: 3, name: 'xx'},
+    {id: 4, name: 'xx'},
+    {id: 5, name: 'xx'},
 ]
 //最新财年营收
 export const fiscal_revenue = [

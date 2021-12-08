@@ -3,7 +3,7 @@
  * @Date: 2021/9/26
  */
 import {formValidationNumber, formValidationInteger} from "@/utils";
-import {createFirm, editFirmInfo, getFirmInfo} from "../../service";
+import {createFirm} from "../../service";
 import moment from "moment";
 import map from "./map";
 import {
@@ -68,7 +68,7 @@ const staticMap = Object.entries(map).map(([city, children]) => (
     }
 ))
 
-export const editFiled = [
+const editFiled = [
     {
         title: '企业基本信息',
         filed: [
@@ -133,7 +133,7 @@ export const editFiled = [
         ]
     },
 ]
-export const editProps = {
+const editProps = {
     beforeEdited: values => {
         if (values['region'] && values['region'].length > 0){
             [values['province'], values['city'], values['area']] = values['region']
@@ -156,9 +156,13 @@ export const editProps = {
         values['region'] = [values['province'], values['city'], values['area']]
         return values
     },
-    searchMethod: getFirmInfo,
-    addMethod: createFirm,
-    saveMethod: editFirmInfo,
-    savePermission: 'can_add',
+    // searchMethod: getFirmInfo, //查询详情api
+    addMethod: createFirm, //新建api
+    // saveMethod: editFirmInfo, //保存编辑api
+    savePermission: 'can_add', //是否有编辑权限
     name: '企业信息'
+}
+
+export const editConfig = {
+    editFiled, editProps
 }

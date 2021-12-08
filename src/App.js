@@ -15,11 +15,11 @@ const { Header, Footer, Content, Sider } = Layout;
 const RoutesCon = ErrorBoundary(Routes)
 
 const init = () => {
+    if (window.isMagnify) require("./style/magnify.less")
     let props = {}
     const registerInfo = JSON.parse(window.localStorage.getItem('registerInfo') || "{}")
     if (systemNameImg) props.systemNameImg = systemNameImg
     if (registerInfo) props.registerInfo = registerInfo
-    window.systemName = '四川省网信企业数据库'
     return props
 }
 

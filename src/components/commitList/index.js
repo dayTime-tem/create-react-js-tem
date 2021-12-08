@@ -7,7 +7,6 @@ import {FormSearch} from "../index";
 import * as ConfigFile from "../../pageConfig"
 import { Spin } from 'antd';
 
-
 const CommitList = (props) => {
     const { config, urlParams } = props
     const [loading, setLoading] = useState(false)
@@ -17,10 +16,10 @@ const CommitList = (props) => {
     const formSearch = useRef()
     useEffect(() => {
         if (!config) return;
-        let { searchFiled = [], columns = [], formSearchProps = {} } = config ? ConfigFile[config] || {} : {}
-        setSearchFiled(searchFiled)
-        setColumns(columns)
-        setFormSearchProps(formSearchProps)
+        let { listSearchConfig = {} } = config ? ConfigFile[config] || {} : {}
+        setSearchFiled(listSearchConfig.searchFiled || [])
+        setColumns(listSearchConfig.columns || [])
+        setFormSearchProps(listSearchConfig)
     }, [config])
     const setLoad = useCallback((b) => {
         setLoading(b)

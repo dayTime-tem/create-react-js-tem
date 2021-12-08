@@ -30,7 +30,7 @@ const TableHandleBtns = (props) => {
                     batchRemoveMethod({selectedRow, onSearch}).then(res => {
                         setLoading(false)
                         if (!res) return;
-                        if (res.status !== 200) return errorTip(res.msg)
+                        if (res.status !== window.state.SUCCESS) return errorTip(res.msg)
                         onSearch()
                         successTip()
                     })

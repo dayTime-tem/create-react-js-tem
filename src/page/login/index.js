@@ -37,7 +37,7 @@ const Login = (props) => {
         getForm().validateFields().then(res =>{
             setLoading(true)
             const { userName, password } = res
-            loginApi({username: userName, checkKey: window.checkKey, password: md5(password)}).then(res => {
+            loginApi({username: userName, checkKey: window.checkKey, password: md5(password)}).then((res = {}) => {
                 setLoading(false)
                 const { status, message, data, msg } = res
                 if (status !== window.state.SUCCESS) {
@@ -46,15 +46,17 @@ const Login = (props) => {
                     })
                     return errorTip(message || msg)
                 }
-                const { username,id } = data
+                const { username, userName, id, auth = ["is_admin"] } = data
                 window.localStorage.setItem('registerInfo', JSON.stringify({
-                    userName: username,
+                    userName: username || userName,
                     id
                 }))
-                let permission = ['can_add', 'can_delete', "can_read", "is_admin"].filter(v => data[v])
+                let permission = [...auth]
                 if (data['is_admin']) permission.push("allPermission")
+                //模拟
+                permission.push('allPermission')
                 window.localStorage.setItem('permissionGroup', JSON.stringify(permission))
-                history.push(goRoute ? goRoute : '/app/baseInfoManagement')
+                history.push(goRoute ? goRoute : window.defaultGo)
             })
         }).catch(res => {})
     }

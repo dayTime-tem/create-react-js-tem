@@ -18,7 +18,7 @@ const FormEdit = (props, ref) =>{
             setLoading && setLoading(true)
             searchMethod(searchParams).then(res => {
                 setLoading && setLoading(false)
-                if (res.status !== 200) return errorTip(res.message)
+                if (res.status !== window.state.SUCCESS) return errorTip(res.message)
                 const data = beforeShowData ? beforeShowData(res.data, {type}) : res.data
                 setEditValue(data)
             })
