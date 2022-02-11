@@ -45,7 +45,7 @@ const FormSearch = (props, ref) => {
     }, [data, tableParams.rowKey])
     const searchApi = useCallback((params, url, type) => {
         // history[(type === 'init' ? 'replace' : 'push')](history.location.pathname + setUrlParams(url))
-        history.push(history.location.pathname + setUrlParams(url))
+        history.replace(history.location.pathname + setUrlParams(url))
         if (!searchMethod) {
             setPaginationData({ pageSize:20, current: 1, total: 0 })
             return setData([]);
