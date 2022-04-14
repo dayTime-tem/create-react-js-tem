@@ -1,8 +1,6 @@
-import ListPage from './listPage'
-import EditPage from './editPage'
-
+import { lazy } from "react";
 const pageComponents = {
-    ListPage,
-    EditPage,
+    ListPage: lazy(() => new Promise(resolve => resolve(import('./listPage')))),
+    EditPage: lazy(() => new Promise(resolve => resolve(import('./editPage')))),
 }
 export default pageComponents

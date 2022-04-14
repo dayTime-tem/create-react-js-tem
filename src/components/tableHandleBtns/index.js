@@ -12,6 +12,13 @@ import icon from "@/img/icon-2.png"
 import classNames from "classnames";
 import {CustomIcon} from "../widget";
 
+const RenderBtn = prop => {
+    if (prop.component){
+        return <prop.component {...prop} />
+    }
+    return <Button {...prop} />
+}
+
 const TableHandleBtns = (props) => {
     const { data, handleBtns, addShow, removeShow, history, selectedRow, setLoading, onSearch, exportShow, exportMethod, batchRemoveMethod } = props
     const skipAdd = () => {
@@ -63,7 +70,7 @@ const TableHandleBtns = (props) => {
             </div>
             <div className="flex-right">
                 <div className={style.defaultBtnBox}>{defaultBtn.map(v => v.show ? <AuthPermission permission={typeof v.show === 'boolean' ? undefined : v.show} key={v.key}><Button onClick={v.onclick} className={classNames(style.independent, v.className)}>{v.name}</Button></AuthPermission> : null)}</div>
-                <div>{handleBtns.map(v => (v.custom ? v.custom({...props}) : <Button key={JSON.stringify(v)}>{v.showText}</Button>))}</div>
+                <div>{handleBtns.map(v => (v.custom ? v.custom({...props}) : <AuthPermission permission={v.show ? (typeof v.show === 'boolean' ? undefined : v.show) : undefined} key={JSON.stringify(v)}><Button {...{render: v.render}} className={classNames(style.independent, v.className)} onClick={() => v.onclick({...props})}>{v.showText}</Button></AuthPermission>))}</div>
             </div>
         </div>
     )

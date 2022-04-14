@@ -1,8 +1,9 @@
-import React from "react";
+import React, {Suspense} from "react";
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import AllComponents from '../page';
 import routesConfig from './config';
 import { isArray } from "@/utils"
+import { Spin } from "antd"
 
 const CRouter = (props) => {
     const permissionGroup = JSON.parse(window.localStorage.getItem('permissionGroup') || "[]" )
@@ -28,10 +29,12 @@ const CRouter = (props) => {
     const createRoute = (key) => routesConfig[key].map(createMenu);
     return (
         <Router>
-            <Switch>
-                {Object.keys(routesConfig).map((key) => isArray(routesConfig[key]) && createRoute(key))}
-                <Route render={() => <Redirect to="/404" />} />
-            </Switch>
+            <Suspense fallback={<Spin spinning />}>
+                <Switch>
+                    {Object.keys(routesConfig).map((key) => isArray(routesConfig[key]) && createRoute(key))}
+                    <Route render={() => <Redirect to="/404" />} />
+                </Switch>
+            </Suspense>
         </Router>
     );
 }

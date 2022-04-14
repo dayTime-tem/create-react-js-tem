@@ -5,7 +5,8 @@
 > 
 > AntD + less + axios + react-router + lodash
 
-+ 按需加载
++ 按需加载antd样式、lodash
++ 路由懒加载
 + 删除部分基础项目用不上的文件
 + 路由基础配置
 + 项目基础文件架构
