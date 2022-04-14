@@ -71,7 +71,7 @@ const MultitermInputModal = (props) =>{
                 <div className={classNames(style.modal_main)}>
                     <div className={classNames(style.modal_main_content)}>
                         <div className={style.modal_main_content_ul}>
-                            {   value.map((v, i) => (
+                            {   value && value.map((v, i) => (
                                 <div className={classNames(style.modal_main_content_li, {[style.active]: active === i})} key={i}>
                                     <div className={classNames(style.li_content)} onClick={() => activeClick(v, i)}>
                                         {i + 1}： {v}
@@ -81,7 +81,7 @@ const MultitermInputModal = (props) =>{
                                     </div>
                                 </div>
                             ))}
-                            {value.length === 0 && <Empty />}
+                            {(!value || value.length === 0) && <Empty />}
                         </div>
                         <div><Button type="primary" onClick={create}><PlusOutlined />新建</Button></div>
                     </div>
