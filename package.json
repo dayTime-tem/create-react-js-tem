@@ -73,17 +73,11 @@
     "build": "node scripts/build.js",
     "commit": "git-cz",
     "release": "standard-version",
-    "prepare": "husky install .config/husky"
+    "prepare": "husky install"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test",
-      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
     }
   },
   "eslintConfig": {
