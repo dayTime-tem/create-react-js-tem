@@ -23,7 +23,6 @@ const init = () => {
     return props
 }
 
-
 function App(props) {
     const [load, setLoad] = useState(false)
     const [initProps, setInitProps] = useState(false)
