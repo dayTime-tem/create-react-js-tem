@@ -72,7 +72,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "commit": "git-cz",
-    "release": "standard-version"
+    "release": "standard-version",
+    "prepare": "husky install .config/husky"
   },
   "config": {
     "commitizen": {
@@ -81,7 +82,8 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -e $GIT_PARAMS"
+      "pre-commit": "npm run test",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
     }
   },
   "eslintConfig": {
@@ -113,7 +115,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "husky": "4.3.8",
+    "husky": "^7.0.4",
     "standard-version": "^9.3.2"
   }
 }
